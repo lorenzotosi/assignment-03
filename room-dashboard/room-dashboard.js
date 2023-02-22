@@ -2,6 +2,15 @@
 document.documentElement.setAttribute("data-theme", "dark");
 
 window.onload = function () {
+    const items = document.querySelectorAll(".nav-link")
+    items.forEach(function (item) {
+        item.addEventListener("click", function () {
+            items.forEach(function (item) {
+                item.classList.remove("active");
+            });
+            this.classList.add("active");
+        });
+    });
     document.querySelector("body").style.transitionDuration = "1s";
 
     const slider = document.getElementById("slider");
