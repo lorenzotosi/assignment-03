@@ -18,5 +18,6 @@ input[type = "range"]{
     max-height: 200px;
 }
 #day, #night {
-    transition: display 1s;
+    transition: opacity 1s;
+    -webkit-transition: opacity 1s;
 }

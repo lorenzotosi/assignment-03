@@ -22,8 +22,14 @@ function changeBackground(isNight){
     if(isNight){
         day.style.opacity = "0";
         night.style.opacity = "1";
+        console.log(document.documentElement.classList)
+        document.documentElement.classList.remove("light");
+        document.documentElement.classList.add("dark");
     } else {
         night.style.opacity = "0";
         day.style.opacity = "1";
+        document.documentElement.classList.remove("dark");
+        document.documentElement.classList.add("light");
+
     }
 }
