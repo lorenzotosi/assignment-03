@@ -1,13 +1,22 @@
 input[type = "range"]{
+    appearance: slider-vertical;
     -webkit-appearance: slider-vertical
 }
 
 .window{
-    width: 100px;
-    height: 100px;
-    position:relative;
+    position: relative;
+    overflow: hidden;
+    width: 400px;
+    height: 200px;
+    max-width: 400px;
+    max-height: 200px;
 }
-.window image{
-    width:10px;
-    position:absolute;
+.window img {
+    position: absolute;
+    overflow: hidden;
+    max-width: 400px;
+    max-height: 200px;
+}
+#day, #night {
+    transition: display 1s;
 }
