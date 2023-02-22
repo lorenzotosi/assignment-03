@@ -8,14 +8,36 @@
         <script src="room-dashboard.js"></script>
     </head>
     <body>
+        <header>
+            <nav class="navbar navbar-expand-lg bg-light">
+                <div class="container-fluid">
+                  <a class="navbar-brand" href="#">Navbar</a>
+                  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                  </button>
+                  <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav">
+                      <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#">Window</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" href="#">History</a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </nav>
+        </header>
         <main>
-            <input type="range" name="" id="slider" min="0" max="100">
-            <div class="window">
-                <img src="images/day-sky.png" id="day" alt="">
-                <img src="images/night-sky.png" id="night" alt="">
-                <img src="images/window-open.png" alt="">
-                <img src="images/window-close.png" id="close" alt="">
-                <img src="images/window-top.png" alt="">
+            <div class="content">
+                <input type="range" name="" id="slider" min="0" max="100">
+                <div class="window">
+                    <img src="images/day-sky.png" id="day" alt="">
+                    <img src="images/night-sky.png" id="night" alt="">
+                    <img src="images/window-open.png" alt="">
+                    <img src="images/window-close.png" id="close" alt="">
+                    <img src="images/window-top.png" alt="">
+                </div>
             </div>
             <button id="test">test</button>
         </main>
