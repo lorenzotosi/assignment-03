@@ -2,13 +2,13 @@
     --font-color: #000;
     --link-color:#1C75B9;
     --link-white-color:#fff;
-    --bg-color: rgb(243,243,243);
+    --bg-color: #76C9FA;
 }
 [data-theme="dark"] {
     --font-color: #c1bfbd;
     --link-color:#0a86da;
     --link-white-color:#c1bfbd;
-    --bg-color: #333;
+    --bg-color: #07080A;
 }
 
 body {
