@@ -97,35 +97,14 @@ void loop() {
   unsigned long now = millis();
   if (now - lastMsgTime > 10000) {
     lastMsgTime = now;
-    value++;
     
+    StaticJsonDocument<200> doc;
+    doc["device"] = "ESP32";
+    doc["sensorType"] = "Temperature";
 
-    /* creating a msg in the buffer */
-    snprintf (msg, MSG_BUFFER_SIZE, "hello world #%ld", value);
 
-    Serial.println(String("Publishing message: ") + msg);
-    
-    /* publishing the msg */
-    client.publish(topic, msg);  
-
-  /*
-    StaticJsonBuffer<300> JSONbuffer;
-    JsonObject& JSONencoder = JSONbuffer.createObject();
-   
-    JSONencoder["device"] = "ESP32";
-    JSONencoder["sensorType"] = "Temperature";
-    char JSONmessageBuffer[100];
-    JSONencoder.printTo(JSONmessageBuffer, sizeof(JSONmessageBuffer));
-    Serial.println("Sending message to MQTT topic..");
-    Serial.println(JSONmessageBuffer);
-   
-    if (client.publish("esp/test", JSONmessageBuffer) == true) {
-      Serial.println("Success sending message");
-    } else {
-      Serial.println("Error sending message");
-    }
-*/
-    
-    
+    char buffer[256];
+    serializeJson(doc, buffer);
+    client.publish(topic, buffer);    
   }
 }
