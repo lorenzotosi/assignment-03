@@ -30,13 +30,20 @@ function slideRollerBlinds(value) {
 function changeBackground(isNight) {
     const night = document.getElementById("night");
     const day = document.getElementById("day");
+    const nav = document.querySelector("nav");
     if (isNight) {
         day.style.opacity = "0";
         night.style.opacity = "1";
         document.documentElement.setAttribute("data-theme", "dark");
+        nav.classList.remove("bg-light");
+        nav.classList.add("navbar-dark");
+        nav.classList.add("bg-dark");
     } else {
         night.style.opacity = "0";
         day.style.opacity = "1";
         document.documentElement.setAttribute("data-theme", "light");
+        nav.classList.remove("bg-dark");
+        nav.classList.remove("navbar-dark");
+        nav.classList.add("bg-light");
     }
 }
