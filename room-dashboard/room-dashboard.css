@@ -19,9 +19,23 @@ body {
     /* transition-duration: 1s; */
 }
 
-input[type = "range"] {
+nav {
+    transition: background-color 1s linear;
+    -webkit-transition: background-color 1s linear;
+}
+
+input[type="range"] {
     appearance: slider-vertical;
     -webkit-appearance: slider-vertical
+}
+
+input {
+    position: absolute;
+    min-width: 185px;
+    min-height: 200px;
+    opacity: 0;
+    z-index: 2;
+    cursor: pointer;
 }
 
 .content{
@@ -46,7 +60,9 @@ input[type = "range"] {
     overflow: hidden;
     max-width: 400px;
     max-height: 200px;
+    pointer-events: none;
 }
+
 #day, #night {
     transition: opacity 1s;
     -webkit-transition: opacity 1s;
