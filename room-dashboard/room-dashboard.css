@@ -1,0 +1,13 @@
+input[type = "range"]{
+    -webkit-appearance: slider-vertical
+}
+
+.window{
+    width: 100px;
+    height: 100px;
+    position:relative;
+}
+.window image{
+    width:10px;
+    position:absolute;
+}
