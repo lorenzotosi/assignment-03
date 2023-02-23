@@ -11,7 +11,8 @@ def on_subscribe(client, userdata, mid, granted_qos):
 def on_message(client, userdata, msg):
     print(msg.topic+" "+str(msg.qos)+" "+str(msg.payload))
     decoded_message = msg.payload.decode("utf-8")
-    q.put(decoded_message)
+    msg = json.loads(decoded_message)
+    q.put(msg)
 
 def on_connect(client, userdata, flags, rc):
     print("Connected with result code "+str(rc))
