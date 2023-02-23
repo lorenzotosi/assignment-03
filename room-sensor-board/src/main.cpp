@@ -2,6 +2,7 @@
 #include <PubSubClient.h>
 #include <ArduinoJson.h>
 #include "constants.h"
+#include "pir.h"
 
 /* wifi network info */
 
@@ -19,6 +20,7 @@ const char* topic = "occupance";
 WiFiClient espClient;
 PubSubClient client(espClient);
 
+pir* p = new pir(18);
 
 unsigned long lastMsgTime = 0;
 int value = 0;
@@ -79,6 +81,7 @@ void reconnect() {
 
 void setup() {
   Serial.begin(115200);
+  p->begin();
   setup_wifi();
   randomSeed(micros());
   client.setServer(mqtt_server, 1883);
@@ -96,19 +99,19 @@ void loop() {
   unsigned long now = millis();
   if (now - lastMsgTime > 10000) {
     lastMsgTime = now;
-    
-    StaticJsonDocument<200> doc;
-    doc["isLedOn"] = digitalRead(18);
-    doc["lightLevel"] = analogRead(32);
-    //doc["value"] = value++;
-    //print the json
-    serializeJson(doc, Serial);
-    Serial.println();
 
+    //if (p->isMotion()) {
+      StaticJsonDocument<200> doc;
+      doc["isLedOn"] = digitalRead(18);
+      doc["lightLevel"] = analogRead(32);
+      serializeJson(doc, Serial);
+      Serial.println();
 
-    char buffer[256];
-    serializeJson(doc, buffer);
-    client.publish(topic, buffer);
-    digitalWrite(18, !digitalRead(18));
+      char buffer[256];
+      serializeJson(doc, buffer);
+      client.publish(topic, buffer);
+      digitalWrite(18, !digitalRead(18));
+    //}
+    //mi serve il pir per testare, devo gestire il led
   }
 }
