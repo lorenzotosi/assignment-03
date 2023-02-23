@@ -6,7 +6,20 @@ window.onload = function () {
 
     const slider = document.getElementById("slider");
     slider.defaultValue = 0;
-    slider.addEventListener("input", function () {
+    slider.addEventListener("mousedown", function () {
+        document.getElementById("close").style.transition = "none";
+        slider.addEventListener("mousemove", function () {
+            slideRollerBlinds(this.value);
+        });
+    });
+    slider.addEventListener("mouseup", function () {
+        document.getElementById("close").style.transition = "top 0.5s";
+        slider.removeEventListener("mousemove", function () {
+            slideRollerBlinds(this.value);
+        });
+
+    });
+    slider.addEventListener("click", function () {
         slideRollerBlinds(this.value);
     });
 
