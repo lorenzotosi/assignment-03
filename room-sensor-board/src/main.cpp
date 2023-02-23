@@ -1,7 +1,6 @@
 #include <WiFi.h>
 #include <PubSubClient.h>
 #include <ArduinoJson.h>
-#define MSG_BUFFER_SIZE  50
 #include "constants.h"
 
 /* wifi network info */
@@ -22,7 +21,6 @@ PubSubClient client(espClient);
 
 
 unsigned long lastMsgTime = 0;
-char msg[MSG_BUFFER_SIZE];
 int value = 0;
 
 
@@ -85,6 +83,7 @@ void setup() {
   randomSeed(micros());
   client.setServer(mqtt_server, 1883);
   client.setCallback(callback);
+  pinMode(18, OUTPUT);
 }
 
 void loop() {
@@ -99,12 +98,17 @@ void loop() {
     lastMsgTime = now;
     
     StaticJsonDocument<200> doc;
-    doc["device"] = "ESP32";
-    doc["sensorType"] = "Temperature";
+    doc["isLedOn"] = digitalRead(18);
+    doc["lightLevel"] = analogRead(32);
+    //doc["value"] = value++;
+    //print the json
+    serializeJson(doc, Serial);
+    Serial.println();
 
 
     char buffer[256];
     serializeJson(doc, buffer);
-    client.publish(topic, buffer);    
+    client.publish(topic, buffer);
+    digitalWrite(18, !digitalRead(18));
   }
 }
