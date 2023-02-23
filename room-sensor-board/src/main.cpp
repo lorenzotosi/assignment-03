@@ -3,28 +3,18 @@
 #include <ArduinoJson.h>
 #include "constants.h"
 #include "pir.h"
+#include "led.h"
+#include "photoresistor.h"
 
-/* wifi network info */
-
-const char* ssid = sid;
-const char* password = pass;
-
-/* MQTT server address */
-const char* mqtt_server = "broker.mqtt-dashboard.com";
-
-/* MQTT topic */
-const char* topic = "occupance";
-
-/* MQTT client management */
 
 WiFiClient espClient;
 PubSubClient client(espClient);
 
-pir* p = new pir(18);
+pir* p = new pir(19);
+led* l = new led(18);
+photoresistor* ph = new photoresistor(32);
 
 unsigned long lastMsgTime = 0;
-int value = 0;
-
 
 void setup_wifi() {
 
@@ -45,8 +35,6 @@ void setup_wifi() {
   Serial.println("IP address: ");
   Serial.println(WiFi.localIP());
 }
-
-/* MQTT subscribing callback */
 
 void callback(char* topic, byte* payload, unsigned int length) {
   Serial.println(String("Message arrived on [") + topic + "] len: " + length );
@@ -81,12 +69,11 @@ void reconnect() {
 
 void setup() {
   Serial.begin(115200);
-  p->begin();
+  p->initialize();
   setup_wifi();
   randomSeed(micros());
   client.setServer(mqtt_server, 1883);
   client.setCallback(callback);
-  pinMode(18, OUTPUT);
 }
 
 void loop() {
