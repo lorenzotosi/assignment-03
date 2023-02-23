@@ -1,22 +1,19 @@
 :root {
     --font-color: #000;
-    --link-color:#1C75B9;
     --link-white-color:#fff;
     --bg-color: #76C9FA;
 }
 [data-theme="dark"] {
     --font-color: #c1bfbd;
-    --link-color:#0a86da;
     --link-white-color:#c1bfbd;
     --bg-color: #07080A;
 }
 
 body {
     color:#000;
-    color:var(--font-color);
-    background:rgb(243,243,243);
-    background:var(--bg-color);
-    /* transition-duration: 1s; */
+    color: var(--font-color);
+    background:#76C9FA;
+    background: var(--bg-color);
 }
 
 nav {
@@ -40,6 +37,7 @@ input {
 
 .content{
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     width: 100%;

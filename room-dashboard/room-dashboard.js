@@ -2,7 +2,7 @@
 document.documentElement.setAttribute("data-theme", "dark");
 
 window.onload = function () {
-    const items = document.querySelectorAll(".nav-link")
+    const items = document.querySelectorAll(".nav-link");
     items.forEach(function (item) {
         item.addEventListener("click", function () {
             items.forEach(function (item) {
@@ -34,6 +34,11 @@ window.onload = function () {
 
 function slideRollerBlinds(value) {
     document.getElementById("close").style.top = -value * 0.85 + "%";
+    if (value == 0) {
+        document.getElementById("status").innerHTML = "closed";
+    } else {
+        document.getElementById("status").innerHTML = "open at " + value + "%";
+    }
 }
 
 function changeBackground(isNight) {
