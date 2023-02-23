@@ -16,9 +16,20 @@ body {
     background: var(--bg-color);
 }
 
+#timeline{
+    width: 70%;
+}
 nav {
+    position:fixed;
+    top:0;
     transition: background-color 1s linear;
     -webkit-transition: background-color 1s linear;
+}
+main{
+    height: 90vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .content{

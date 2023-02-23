@@ -28,6 +28,7 @@ function drawChart() {
     dataTable.addRows([
         ['On', new Date(1789, 3, 30), new Date(1797, 2, 4)],
         ['Off', new Date(1797, 2, 4), new Date(1801, 2, 4)],
+        ['On', new Date(1801, 2, 4), new Date(1805, 2, 4)]
     ]);
 
     var options = {
