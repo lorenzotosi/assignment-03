@@ -5,6 +5,24 @@ window.onload = function () {
     document.querySelector("body").style.transitionDuration = "1s";
 
     const slider = document.getElementById("slider");
+    handleSlider(slider);
+
+    let isNight = true;
+    changeBackground(isNight);
+    isNight = !isNight;
+
+    // SOLO PER TEST: ------
+    if (document.getElementById("test")) {
+        document.getElementById("test").addEventListener("click", function () {
+            changeBackground(isNight);
+            isNight = !isNight;
+        });
+    }
+    // ----------------------
+};
+
+function handleSlider(slider) {
+    if (!slider) return;
     slider.defaultValue = 0;
     slider.addEventListener("mousedown", function () {
         document.getElementById("close").style.transition = "none";
@@ -22,18 +40,8 @@ window.onload = function () {
     slider.addEventListener("click", function () {
         slideRollerBlinds(this.value);
     });
+}
 
-    let isNight = true;
-    changeBackground(isNight);
-    isNight = !isNight;
-
-    // SOLO PER TEST: ------
-    document.getElementById("test").addEventListener("click", function () {
-        changeBackground(isNight);
-        isNight = !isNight;
-    });
-    // ----------------------
-};
 
 
 function slideRollerBlinds(value) {
@@ -50,15 +58,19 @@ function changeBackground(isNight) {
     const day = document.getElementById("day");
     const nav = document.querySelector("nav");
     if (isNight) {
-        day.style.opacity = "0";
-        night.style.opacity = "1";
+        if (day && night) {
+            day.style.opacity = "0";
+            night.style.opacity = "1";
+        }
         document.documentElement.setAttribute("data-theme", "dark");
         nav.classList.remove("bg-light");
         nav.classList.add("navbar-dark");
         nav.classList.add("bg-dark");
     } else {
-        night.style.opacity = "0";
-        day.style.opacity = "1";
+        if (day && night) {
+            night.style.opacity = "0";
+            day.style.opacity = "1";
+        }
         document.documentElement.setAttribute("data-theme", "light");
         nav.classList.remove("bg-dark");
         nav.classList.remove("navbar-dark");
