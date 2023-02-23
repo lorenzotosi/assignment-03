@@ -21,6 +21,11 @@ window.onload = function () {
     // ----------------------
 };
 
+window.onresize = function () {
+    google.charts.load('current', {'packages':['timeline']});
+    google.charts.setOnLoadCallback(drawChart);
+};
+
 function handleSlider(slider) {
     if (!slider) return;
     slider.defaultValue = 0;
