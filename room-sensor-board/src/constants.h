@@ -1,2 +1,0 @@
-#define pass 
-#define sid 
