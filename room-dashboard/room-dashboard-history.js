@@ -30,11 +30,12 @@ function drawWindowLog() {
     dataTable.addColumn({ type: "string", id: "Status" });
     dataTable.addColumn({ type: "date", id: "Start" });
     dataTable.addColumn({ type: "date", id: "End" });
-    dataTable.addRows([
-        ["Open", new Date(1789, 3, 30), new Date(1797, 2, 4)],
-        ["Closed", new Date(1797, 2, 4), new Date(1801, 2, 4)],
-        ["Open", new Date(1801, 2, 4), new Date(1805, 2, 4)]
-    ]);
+    axios.get("logs.json").then((response) => {
+        let data = response.data["data"];
+        data.forEach(element => {
+            dataTable.addRow([element.status, new Date(element.start), new Date(element.end)]);
+        });
+    });
     let options = {
         backgroundColor: "#323438",
         colors: ["black"],
