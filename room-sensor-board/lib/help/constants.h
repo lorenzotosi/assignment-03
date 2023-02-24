@@ -1,10 +1,12 @@
-#define sid ""
-#define pass ""
+#include "pir.h"
+#include "led.h"
+#include "photoresistor.h"
+#include "execute.h"
+#include "Scheduler.h"
+#include "clientWifi.h"
 
-/* wifi network info */
-
-const char* ssid = sid;
-const char* password = pass;
+const char* ssid = "";
+const char* password = "";
 
 /* MQTT server address */
 const char* mqtt_server = "broker.mqtt-dashboard.com";
