@@ -10,7 +10,7 @@
 
 class execute : public Task {
     public:
-        execute(pir* p, led* l, photoresistor* ph, PubSubClient* client);
+        execute(pir* p, led* l, photoresistor* ph, PubSubClient* client, const char* topic);
         void init(int period);
         void tick();
     private:
@@ -18,6 +18,7 @@ class execute : public Task {
         led* l;
         photoresistor* ph;
         PubSubClient* client;
+        const char* topic;
 };
 
 #endif
