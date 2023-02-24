@@ -17,6 +17,13 @@ window.onresize = function () {
     google.charts.setOnLoadCallback(drawChart);
 };
 
+function test() {
+    axios.get("room-dashboard-history.php").then((response) => {
+        console.log(response.data);
+    });
+}
+
+
 function drawChart() {
     axios.get("logs.json").then((response) => {
         let windowData = response.data["data"][0]["window-log"];
@@ -65,12 +72,12 @@ function drawLightsUsage(data) {
     const container = document.getElementById("lights-usage");
     const chart = new google.visualization.PieChart(container);
     let sumOn = 0;
-    let sumOff = 0
+    let sumOff = 0;
     data.forEach(element => {
-        if(element.status == "On"){
-            sumOn += (new Date(element.end) - new Date(element.start)) / (3600000 * 24* 30);
+        if (element.status == "On") {
+            sumOn += (new Date(element.end) - new Date(element.start)) / (3600000 * 24 * 30);
         }
-        else{
+        else {
             sumOff += (new Date(element.end) - new Date(element.start)) / (3600000 * 24 * 30);
         }
     });

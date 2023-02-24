@@ -21,12 +21,13 @@ def on_message(client, userdata, msg):
 
 client = paho.Client()
 client.on_connect = on_connect
-client.connect("broker.hivemq.com", 1883)
+# client.connect("broker.hivemq.com", 1883)
 client.on_subscribe = on_subscribe
 client.on_message = on_message
-url = "http://368d-176-247-145-118.eu.ngrok.io"
+url = "http://localhost/assignment-03/room-dashboard/room-dashboard-history.php"
+req.post(url, json={"room": "1", "occupance": "1"})
 
-client.loop_forever()
+# client.loop_forever()
 
 print("Starting loop")
 
