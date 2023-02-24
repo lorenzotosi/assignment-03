@@ -44,7 +44,6 @@ request_content = {
                 {
                     "status" : "On",
                     "start" : now,
-                    "end" : "15:16:32"
                 }
             ]
         }
