@@ -1,4 +1,5 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
@@ -13,7 +14,7 @@
     <header>
         <nav class="navbar navbar-dark navbar-expand-lg bg-dark">
             <div class="container-fluid">
-                <a class="navbar-brand" href="#">Navbar</a>
+                <a class="navbar-brand" href="#">Room Dashboard</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav"
                     aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -21,10 +22,10 @@
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav">
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="./room-dashboard-window.html">Window</a>
+                            <a class="nav-link active" aria-current="page" href="./room-dashboard-window.html">Window Manager</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="./room-dashboard-history.html">History</a>
+                            <a class="nav-link" href="./room-dashboard-history.html">System Logs</a>
                         </li>
                     </ul>
                 </div>
@@ -32,23 +33,24 @@
         </nav>
     </header>
     <main>
+        <div class="heading">
+            <p id="time">20:30</p>
+            <p class="lights-info">The lights are currently <span id="lights-status">off</span>.</p>
+        </div>
         <div class="content">
-            <p>
-                Drag the roller blind to open or close it.
-            </p>
+            <p class="window-info">Drag the roller blind or tap somewhere on the window to open or close it.</p>
             <div class="window">
-                <input type="range" name="" id="slider" min="0" max="100">
+                <input type="range" name="window-slider" id="slider" min="0" max="100">
                 <img src="images/day-sky.png" id="day" alt="">
                 <img src="images/night-sky.png" id="night" alt="">
                 <img src="images/window-open.png" alt="">
                 <img src="images/window-close.png" id="close" alt="">
                 <img src="images/window-top.png" alt="">
             </div>
-            <p id="window-info">
-                The roller blind is currently <span id="status">closed</span>.
-            </p>
+            <p class="window-info">The roller blind is currently <span id="window-status">closed</span>.</p>
         </div>
-        <button id="test">test</button>
+        <button id="test">test day-night</button>
+        <button id="testl">test lights</button>
     </main>
     <!-- 
         https://canvasjs.com/javascript-charts/stacked-bar-chart/

@@ -11,17 +11,19 @@ window.onload = function () {
     isNight = !isNight;
 
     // SOLO PER TEST: ------
-    if (document.getElementById("test")) {
-        document.getElementById("test").addEventListener("click", function () {
-            changeBackground(isNight);
-            isNight = !isNight;
-        });
-    }
+    document.getElementById("test").addEventListener("click", function () {
+        changeBackground(isNight);
+        isNight = !isNight;
+    });
+    let isOn = false;
+    document.getElementById("testl").addEventListener("click", function () {
+        isOn = !isOn;
+        checkLights(isOn);
+    });
     // ----------------------
 };
 
 function handleSlider(slider) {
-    if (!slider) return;
     slider.defaultValue = 0;
     slider.addEventListener("mousedown", function () {
         document.getElementById("close").style.transition = "none";
@@ -44,10 +46,15 @@ function handleSlider(slider) {
 function slideRollerBlinds(value) {
     document.getElementById("close").style.top = -value * 0.85 + "%";
     if (value == 0) {
-        document.getElementById("status").innerHTML = "closed";
+        document.getElementById("window-status").innerHTML = "closed";
     } else {
-        document.getElementById("status").innerHTML = "open at " + value + "%";
+        document.getElementById("window-status").innerHTML = "open at " + value + "%";
     }
+}
+
+function checkLights(isOn) {
+    document.getElementById("lights-status").innerHTML = isOn ? "on" : "off";
+    document.getElementById("lights-status").style.color = isOn ? "green" : "red";
 }
 
 function changeBackground(isNight) {
@@ -55,19 +62,15 @@ function changeBackground(isNight) {
     const day = document.getElementById("day");
     const nav = document.querySelector("nav");
     if (isNight) {
-        if (day && night) {
-            day.style.opacity = "0";
-            night.style.opacity = "1";
-        }
+        day.style.opacity = "0";
+        night.style.opacity = "1";
         document.documentElement.setAttribute("data-theme", "dark");
         nav.classList.remove("bg-light");
         nav.classList.add("navbar-dark");
         nav.classList.add("bg-dark");
     } else {
-        if (day && night) {
-            night.style.opacity = "0";
-            day.style.opacity = "1";
-        }
+        night.style.opacity = "0";
+        day.style.opacity = "1";
         document.documentElement.setAttribute("data-theme", "light");
         nav.classList.remove("bg-dark");
         nav.classList.remove("navbar-dark");
