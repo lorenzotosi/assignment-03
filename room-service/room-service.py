@@ -19,28 +19,72 @@ def callback(client, userdata, message):
 def on_message(client, userdata, msg):
     print(msg.topic+" "+str(msg.qos)+" "+str(msg.payload))
     decoded_message = msg.payload.decode("utf-8")
-    msg = json.loads(decoded_message)
-    req.post(url, json=msg)
+    now = datetime.now().strftime("%H:%M:%S")
+    if (decoded_message == "occupied"):
+        if (first_entry):
+            first_entry = False
+            window_status = 100
+            type = "window"
+            request = {
+                "content" : {
+                    "status" : window_status,
+                    "start" : now,
+                },
+                "type" : type
+            }
+            req.post(url, json=request)
+            # TODO: send request to serial
+        if (light_status == "Off"):
+            light_status = "On"
+            type = "lights"
+            request = {
+                "content" : {
+                    "status" : light_status,
+                    "start" : now,
+                },
+                "type" : type
+            }
+            req.post(url, json=request)
+            # TODO: send request to serial
+    else:
+        if (light_status == "On"):
+            light_status = "Off"
+            type = "lights"
+            request = {
+                "content" : {
+                    "status" : light_status,
+                    "start" : now,
+                },
+                "type" : type
+            }
+            req.post(url, json=request)
+            # TODO: send request to serial
+        if (datetime.now().hour >= 19 and datetime.now().hour <= 8):
+            first_entry = True
+            if (window_status != 0):
+                window_status = 0
+                type = "window"
+                request = {
+                    "content" : {
+                        "status" : window_status,
+                        "start" : now,
+                    },
+                    "type" : type
+                }
+                req.post(url, json=request)
+                # TODO: send request to serial
+            
     
-
+light_status = "Off"
+window_status = 0
+first_entry = True
 client = paho.Client()
 client.on_connect = on_connect
 # client.connect("broker.hivemq.com", 1883)
 client.on_subscribe = on_subscribe
 client.on_message = on_message
 url = "http://localhost/assignment-03/room-dashboard/room-dashboard-history.php"
-now = datetime.now().strftime("%H:%M:%S")
-#TODO status e type devono essere passati dal bro tosi
-status = "On"
-type = "Window"
-request = {
-    "content" : {
-        "status" : status,
-        "start" : now,
-    },
-    "type" : type
-}
-req.post(url, json=request)
+
 
 # client.loop_forever()
 
