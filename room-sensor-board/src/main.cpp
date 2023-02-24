@@ -28,6 +28,8 @@ void reconnect() {
 
 void setup() {
   Serial.begin(115200);
+  p->initialize();
+  l->initialize();
   s->init(SCHEDULER);
   s->addTask(e);
   e->init(EXECUTE);
