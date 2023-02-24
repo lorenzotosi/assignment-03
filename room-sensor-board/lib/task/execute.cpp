@@ -13,18 +13,22 @@ void execute::init(int period) {
 }
 
 void execute::tick() {
+    if(p->isMotion()){
+        StaticJsonDocument<200> doc;
+        doc["isLedOn"] = "si o no, non lo so :((";
+        doc["lightLevel"] = analogRead(32);
+        doc["isMotion"] = p->getState();
+        serializeJson(doc, Serial);
+        Serial.println();
 
-    //this->client.loop();
-    StaticJsonDocument<200> doc;
-    doc["isLedOn"] = "sium";
-    doc["lightLevel"] = analogRead(32);
-    serializeJson(doc, Serial);
-    Serial.println();
+        char buffer[256];
+        serializeJson(doc, buffer);
+        client->publish("occupance", buffer);
+    }
 
-    char buffer[256];
-    serializeJson(doc, buffer);
-    client->publish("occupance", buffer);
+    if(p->getState()){
+        l->on();
+    } else {
+        l->off();
+    }
 }
-
-
-
