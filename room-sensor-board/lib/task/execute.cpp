@@ -13,7 +13,7 @@ void execute::init(int period) {
 }
 
 void execute::tick() {
-    if(p->isMotion()){
+    //if(p->isMotion()){
         StaticJsonDocument<200> doc;
         doc["isLedOn"] = "si o no, non lo so :((";
         doc["lightLevel"] = analogRead(32);
@@ -24,7 +24,7 @@ void execute::tick() {
         char buffer[256];
         serializeJson(doc, buffer);
         client->publish(this->topic, buffer);
-    }
+    //}
 
     if(p->getState()){
         l->on();
