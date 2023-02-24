@@ -6,10 +6,8 @@ PubSubClient client(espClient);
 pir* p = new pir(19);
 led* l = new led(18);
 photoresistor* ph = new photoresistor(32);
-execute* e = new execute(p, l, ph, &client);
+execute* e = new execute(p, l, ph, &client, topic);
 Scheduler* s = new Scheduler();
-
-unsigned long lastMsgTime = 0;
 
 void reconnect() {
   while (!client.connected()) {
