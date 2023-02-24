@@ -19,10 +19,11 @@ window.onresize = function () {
 
 function drawChart() {
     axios.get("logs.json").then((response) => {
-        let data = response.data["data"][0]["window-log"];
-        drawWindowLog(data);
-        drawLightsLog(data);
-        drawLightsUsage(data);
+        let windowData = response.data["data"][0]["window-log"];
+        let lightsData = response.data["data"][0]["lights-log"];
+        drawWindowLog(windowData);
+        drawLightsLog(lightsData);
+        drawLightsUsage(lightsData);
     });
 }
 
@@ -51,14 +52,8 @@ function drawLightsLog(data) {
     dataTable.addColumn({ type: "date", id: "Start" });
     dataTable.addColumn({ type: "date", id: "End" });
     data.forEach(element => {
-        console.log(element);
         dataTable.addRow([element.status, new Date(element.start), new Date(element.end)]);
     });
-    // dataTable.addRows([
-    //     ["On", new Date(1789, 3, 30), new Date(1797, 2, 4)],
-    //     ["Off", new Date(1797, 2, 4), new Date(1801, 2, 4)],
-    //     ["On", new Date(1801, 2, 4), new Date(1805, 2, 4)]
-    // ]);
     let options = {
         backgroundColor: "#323438",
         colors: ["green", "red"],
