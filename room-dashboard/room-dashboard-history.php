@@ -2,10 +2,10 @@
 
 $data = json_decode(file_get_contents("php://input"), true);
 
-if (isset($data["room"])) {
-    $room = $data["room"];
-    file_put_contents("temp.json", json_encode($data));
-    echo $room;
+if (isset($data)) {
+    $jsonContent = json_decode(file_get_contents("logs.json"), true);
+
+    file_put_contents("temp.json", json_encode($data, JSON_PRETTY_PRINT));
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
