@@ -1,10 +1,4 @@
-#include "clientWifi.h"
 #include "constants.h"
-#include "pir.h"
-#include "led.h"
-#include "photoresistor.h"
-#include "execute.h"
-#include "Scheduler.h"
 
 WiFiClient espClient;
 PubSubClient client(espClient);
