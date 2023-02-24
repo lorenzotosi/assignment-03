@@ -37,7 +37,7 @@ function drawWindowLog() {
     ]);
     let options = {
         backgroundColor: "#323438",
-        colors: ["black"]
+        colors: ["black"],
     };
     chart.draw(dataTable, google.charts.Line.convertOptions(options));
 }
@@ -71,7 +71,16 @@ function drawLightsUsage() {
     ]);
     let options = {
         backgroundColor: "#323438",
+        colors: ["green", "red"],
         is3D: true,
+        legendTextStyle: {
+            color: "white",
+            fontSize: 12,
+        },
+        pieSliceText: "value",
+        legend: {
+            position: "labeled",
+        },
     };
     chart.draw(dataTable, options);
 }
