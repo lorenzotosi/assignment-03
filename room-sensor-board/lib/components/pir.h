@@ -8,6 +8,7 @@ class pir {
         pir(int pin);
         void initialize();
         bool isMotion();
+        bool getState();
     private:
         int _pin;
         bool _state;

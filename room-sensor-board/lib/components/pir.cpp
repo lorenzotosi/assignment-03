@@ -17,3 +17,7 @@ bool pir::isMotion() {
     }
     return false;
 }
+
+bool pir::getState() {
+    return _state;
+}
