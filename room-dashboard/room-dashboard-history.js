@@ -2,7 +2,7 @@
 document.documentElement.setAttribute("data-theme", "dark");
 
 window.onload = function () {
-    google.charts.load('current', { 'packages': ['timeline'] });
+    google.charts.load("current", { "packages": ["timeline", "line", "corechart"] });
     google.charts.setOnLoadCallback(drawChart);
 
     document.querySelector("body").style.transitionDuration = "1s";
@@ -13,29 +13,66 @@ window.onload = function () {
 };
 
 window.onresize = function () {
-    google.charts.load('current', { 'packages': ['timeline'] });
+    google.charts.load("current", { "packages": ["timeline", "line", "corechart"] });
     google.charts.setOnLoadCallback(drawChart);
 };
 
 function drawChart() {
-    var container = document.getElementById('timeline');
-    var chart = new google.visualization.Timeline(container);
-    var dataTable = new google.visualization.DataTable();
+    drawWindowLog();
+    drawLightsLog();
+    drawLightsUsage();
+}
 
-    dataTable.addColumn({ type: 'string', id: 'President' });
-    dataTable.addColumn({ type: 'date', id: 'Start' });
-    dataTable.addColumn({ type: 'date', id: 'End' });
+function drawWindowLog() {
+    const container = document.getElementById("window-log");
+    const chart = new google.charts.Line(container);
+    const dataTable = new google.visualization.DataTable();
+    dataTable.addColumn({ type: "string", id: "Status" });
+    dataTable.addColumn({ type: "date", id: "Start" });
+    dataTable.addColumn({ type: "date", id: "End" });
     dataTable.addRows([
-        ['On', new Date(1789, 3, 30), new Date(1797, 2, 4)],
-        ['Off', new Date(1797, 2, 4), new Date(1801, 2, 4)],
-        ['On', new Date(1801, 2, 4), new Date(1805, 2, 4)]
+        ["Open", new Date(1789, 3, 30), new Date(1797, 2, 4)],
+        ["Closed", new Date(1797, 2, 4), new Date(1801, 2, 4)],
+        ["Open", new Date(1801, 2, 4), new Date(1805, 2, 4)]
     ]);
+    let options = {
+        backgroundColor: "#323438",
+        colors: ["black"]
+    };
+    chart.draw(dataTable, google.charts.Line.convertOptions(options));
+}
 
-    var options = {
+function drawLightsLog() {
+    const container = document.getElementById("lights-log");
+    const chart = new google.visualization.Timeline(container);
+    const dataTable = new google.visualization.DataTable();
+    dataTable.addColumn({ type: "string", id: "Status" });
+    dataTable.addColumn({ type: "date", id: "Start" });
+    dataTable.addColumn({ type: "date", id: "End" });
+    dataTable.addRows([
+        ["On", new Date(1789, 3, 30), new Date(1797, 2, 4)],
+        ["Off", new Date(1797, 2, 4), new Date(1801, 2, 4)],
+        ["On", new Date(1801, 2, 4), new Date(1805, 2, 4)]
+    ]);
+    let options = {
         backgroundColor: "#323438",
         colors: ["green", "red"],
     };
+    chart.draw(dataTable, options);
+}
 
+function drawLightsUsage() {
+    const container = document.getElementById("lights-usage");
+    const chart = new google.visualization.PieChart(container);
+    const dataTable = google.visualization.arrayToDataTable([
+        ["Status", "Hours"],
+        ["On", 11],
+        ["Off", 2]
+    ]);
+    let options = {
+        backgroundColor: "#323438",
+        is3D: true,
+    };
     chart.draw(dataTable, options);
 }
 
