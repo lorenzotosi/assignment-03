@@ -26,8 +26,8 @@ function test() {
 
 function drawChart() {
     axios.get("logs.json").then((response) => {
-        let windowData = response.data["data"][0]["window-log"];
-        let lightsData = response.data["data"][0]["lights-log"];
+        let windowData = response.data["data"]["window-log"];
+        let lightsData = response.data["data"]["lights-log"];
         drawWindowLog(windowData);
         drawLightsLog(lightsData);
         drawLightsUsage(lightsData);

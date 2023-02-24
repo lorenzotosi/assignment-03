@@ -1,41 +1,38 @@
 {
-    "data" : [
-        {
-            "window-log" : [
-                {
-                    "status" : "Open",
-                    "start" : "1789, 3, 30",
-                    "end" : "1797, 2, 4"
-                },
-                {
-                    "status" : "Closed",
-                    "start" : "1797, 2, 4",
-                    "end" : "1801, 2, 4"
-                },
-                {
-                    "status" : "Open",
-                    "start" : "1801, 2, 4",
-                    "end" : "1805, 2, 4"
-                }
-            ],
-        
-            "lights-log" : [
-                {
-                    "status" : "On",
-                    "start" : "1789, 3, 30",
-                    "end" : "1797, 2, 4"
-                },
-                {
-                    "status" : "Off",
-                    "start" : "1797, 2, 4",
-                    "end" : "1801, 2, 4"
-                },
-                {
-                    "status" : "On",
-                    "start" : "1801, 2, 4",
-                    "end" : "1805, 2, 4"
-                }
-            ]
-        }
-    ]
+    "data" : {
+        "window-log" : [
+            {
+                "status" : "Open",
+                "start" : "1789, 3, 30",
+                "end" : "1797, 2, 4"
+            },
+            {
+                "status" : "Closed",
+                "start" : "1797, 2, 4",
+                "end" : "1801, 2, 4"
+            },
+            {
+                "status" : "Open",
+                "start" : "1801, 2, 4",
+                "end" : "1805, 2, 4"
+            }
+        ],
+        "lights-log" : [
+            {
+                "status" : "On",
+                "start" : "1789, 3, 30",
+                "end" : "1797, 2, 4"
+            },
+            {
+                "status" : "Off",
+                "start" : "1797, 2, 4",
+                "end" : "1801, 2, 4"
+            },
+            {
+                "status" : "On",
+                "start" : "1801, 2, 4",
+                "end" : "1805, 2, 4"
+            }
+        ]
+    }
 }

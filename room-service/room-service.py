@@ -30,26 +30,17 @@ client.on_subscribe = on_subscribe
 client.on_message = on_message
 url = "http://localhost/assignment-03/room-dashboard/room-dashboard-history.php"
 now = datetime.now().strftime("%H:%M:%S")
-#TODO controllare se è un cambiamento della finestra o delle luci
-request_content = {
-    "data" : [
-        {
-            "window-log" : [
-                {
-                    "status" : "Open",
-                    "start" : now,
-                }
-            ],
-            "lights-log" : [
-                {
-                    "status" : "On",
-                    "start" : now,
-                }
-            ]
-        }
-    ]
+#TODO status e type devono essere passati dal bro tosi
+status = "On"
+type = "Window"
+request = {
+    "content" : {
+        "status" : status,
+        "start" : now,
+    },
+    "type" : type
 }
-req.post(url, json=request_content)
+req.post(url, json=request)
 
 # client.loop_forever()
 
