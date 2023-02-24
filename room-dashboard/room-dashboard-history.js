@@ -64,10 +64,20 @@ function drawLightsLog(data) {
 function drawLightsUsage(data) {
     const container = document.getElementById("lights-usage");
     const chart = new google.visualization.PieChart(container);
+    let sumOn = 0;
+    let sumOff = 0
+    data.forEach(element => {
+        if(element.status == "On"){
+            sumOn += (new Date(element.end) - new Date(element.start)) / (3600000 * 24* 30);
+        }
+        else{
+            sumOff += (new Date(element.end) - new Date(element.start)) / (3600000 * 24 * 30);
+        }
+    });
     const dataTable = google.visualization.arrayToDataTable([
         ["Status", "Hours"],
-        ["On", 11],
-        ["Off", 2]
+        ["On", sumOn],
+        ["Off", sumOff]
     ]);
     let options = {
         backgroundColor: "#323438",
