@@ -31,7 +31,7 @@ function drawWindowLog() {
     dataTable.addColumn({ type: "date", id: "Start" });
     dataTable.addColumn({ type: "date", id: "End" });
     axios.get("logs.json").then((response) => {
-        let data = response.data["data"];
+        let data = response.data["data"][0]["window-log"];
         data.forEach(element => {
             dataTable.addRow([element.status, new Date(element.start), new Date(element.end)]);
         });
