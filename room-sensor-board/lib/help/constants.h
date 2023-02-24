@@ -9,8 +9,12 @@
 #include "Scheduler.h"
 #include "clientWifi.h"
 
+#define SCHEDULER 1000
+#define EXECUTE 1000
+
 const char* ssid = "";
 const char* password = "";
+
 
 
 /* MQTT server address */

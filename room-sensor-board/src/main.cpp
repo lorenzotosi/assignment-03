@@ -28,9 +28,9 @@ void reconnect() {
 
 void setup() {
   Serial.begin(115200);
-  s->init(1000);
+  s->init(SCHEDULER);
   s->addTask(e);
-  e->init(1000);
+  e->init(EXECUTE);
   clientWifi::wifiConnect(ssid, password);
   randomSeed(micros());
   client.setServer(mqtt_server, 1883);
