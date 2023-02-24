@@ -18,23 +18,23 @@ window.onresize = function () {
 };
 
 function drawChart() {
-    drawWindowLog();
-    drawLightsLog();
-    drawLightsUsage();
+    axios.get("logs.json").then((response) => {
+        let data = response.data["data"][0]["window-log"];
+        drawWindowLog(data);
+        drawLightsLog(data);
+        drawLightsUsage(data);
+    });
 }
 
-function drawWindowLog() {
+function drawWindowLog(data) {
     const container = document.getElementById("window-log");
     const chart = new google.charts.Line(container);
     const dataTable = new google.visualization.DataTable();
     dataTable.addColumn({ type: "string", id: "Status" });
     dataTable.addColumn({ type: "date", id: "Start" });
     dataTable.addColumn({ type: "date", id: "End" });
-    axios.get("logs.json").then((response) => {
-        let data = response.data["data"][0]["window-log"];
-        data.forEach(element => {
-            dataTable.addRow([element.status, new Date(element.start), new Date(element.end)]);
-        });
+    data.forEach(element => {
+        dataTable.addRow([element.status, new Date(element.start), new Date(element.end)]);
     });
     let options = {
         backgroundColor: "#323438",
@@ -43,18 +43,22 @@ function drawWindowLog() {
     chart.draw(dataTable, google.charts.Line.convertOptions(options));
 }
 
-function drawLightsLog() {
+function drawLightsLog(data) {
     const container = document.getElementById("lights-log");
     const chart = new google.visualization.Timeline(container);
     const dataTable = new google.visualization.DataTable();
     dataTable.addColumn({ type: "string", id: "Status" });
     dataTable.addColumn({ type: "date", id: "Start" });
     dataTable.addColumn({ type: "date", id: "End" });
-    dataTable.addRows([
-        ["On", new Date(1789, 3, 30), new Date(1797, 2, 4)],
-        ["Off", new Date(1797, 2, 4), new Date(1801, 2, 4)],
-        ["On", new Date(1801, 2, 4), new Date(1805, 2, 4)]
-    ]);
+    data.forEach(element => {
+        console.log(element);
+        dataTable.addRow([element.status, new Date(element.start), new Date(element.end)]);
+    });
+    // dataTable.addRows([
+    //     ["On", new Date(1789, 3, 30), new Date(1797, 2, 4)],
+    //     ["Off", new Date(1797, 2, 4), new Date(1801, 2, 4)],
+    //     ["On", new Date(1801, 2, 4), new Date(1805, 2, 4)]
+    // ]);
     let options = {
         backgroundColor: "#323438",
         colors: ["green", "red"],
@@ -62,7 +66,7 @@ function drawLightsLog() {
     chart.draw(dataTable, options);
 }
 
-function drawLightsUsage() {
+function drawLightsUsage(data) {
     const container = document.getElementById("lights-usage");
     const chart = new google.visualization.PieChart(container);
     const dataTable = google.visualization.arrayToDataTable([
