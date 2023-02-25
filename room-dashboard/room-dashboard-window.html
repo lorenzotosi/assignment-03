@@ -33,24 +33,28 @@
         </nav>
     </header>
     <main>
-        <div class="heading">
-            <p id="time">20:30</p>
+        <p id="time">20:30</p>
+        <div class="lights">
+            <p class="lights-info">Tap the light bulb to turn the lights on or off.</p>
+            <div class="light">
+                <img src="images/light-off.png" alt="light-off" class="light-switch" id="light-off">
+                <img src="images/light-on.png" alt="light-on" class="light-switch" id="light-on">
+            </div>
             <p class="lights-info">The lights are currently <span id="lights-status">off</span>.</p>
         </div>
         <div class="content">
             <p class="window-info">Drag the roller blind or tap somewhere on the window to open or close it.</p>
             <div class="window">
                 <input type="range" name="window-slider" id="slider" min="0" max="100">
-                <img src="images/day-sky.png" id="day" alt="">
-                <img src="images/night-sky.png" id="night" alt="">
-                <img src="images/window-open.png" alt="">
-                <img src="images/window-close.png" id="close" alt="">
-                <img src="images/window-top.png" alt="">
+                <img src="images/day-sky.png" id="day" alt="day-sky">
+                <img src="images/night-sky.png" id="night" alt="night-sky">
+                <img src="images/window-open.png" alt="window-open">
+                <img src="images/window-close.png" id="close" alt="window-close">
+                <img src="images/window-top.png" alt="window-top">
             </div>
             <p class="window-info">The roller blind is currently <span id="window-status">closed</span>.</p>
         </div>
         <button id="test">test day-night</button>
-        <button id="testl">test lights</button>
     </main>
 </body>
 

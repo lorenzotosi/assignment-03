@@ -62,6 +62,31 @@ input {
     transition: top .5s;
 }
 
+.lights {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+}
+
+.light {
+    position: relative;
+    overflow: hidden;
+    width: 70px;
+    height: 80px;
+    max-width: 70px;
+    max-height: 80px;
+}
+
+.light img {
+    position: absolute;
+    overflow: hidden;
+    max-width: 70px;
+    max-height: 80px;
+    cursor: pointer;
+}
+
 .window {
     position: relative;
     overflow: hidden;
@@ -82,6 +107,15 @@ input {
 #day, #night {
     transition: opacity 1s;
     -webkit-transition: opacity 1s;
+}
+
+#light-on, #light-off {
+    transition: opacity 0.5s;
+    -webkit-transition: opacity 0.5s;
+}
+
+#light-on {
+    opacity: 0;
 }
 
 .window-info,

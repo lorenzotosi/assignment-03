@@ -10,15 +10,19 @@ window.onload = function () {
     changeBackground(isNight);
     isNight = !isNight;
 
+    let isOn = false;
+    lightSwitches = document.querySelectorAll(".light-switch");
+    lightSwitches.forEach(element => {
+        element.addEventListener("click", function () {
+            isOn = !isOn;
+            checkLights(isOn);
+        });
+    });
+
     // SOLO PER TEST: ------
     document.getElementById("test").addEventListener("click", function () {
         changeBackground(isNight);
         isNight = !isNight;
-    });
-    let isOn = false;
-    document.getElementById("testl").addEventListener("click", function () {
-        isOn = !isOn;
-        checkLights(isOn);
     });
     // ----------------------
 };
@@ -55,6 +59,8 @@ function slideRollerBlinds(value) {
 function checkLights(isOn) {
     document.getElementById("lights-status").innerHTML = isOn ? "on" : "off";
     document.getElementById("lights-status").style.color = isOn ? "green" : "red";
+    document.getElementById(isOn ? "light-on" : "light-off").style.opacity = "1";
+    document.getElementById(isOn ? "light-off" : "light-on").style.opacity = "0";
 }
 
 function changeBackground(isNight) {
