@@ -53,6 +53,4 @@ function adjustArray($dataArray, $newElement)
         $elementDate["start"] = date("H:i:s", $elementDate["start"]);
         $elementDate["end"] = date("H:i:s", $elementDate["end"]);
     }
-    $newElement["start"] = date("H:i:s", $newElement["start"]);
-    $newElement["end"] = date("H:i:s", $newElement["end"]);
 }
