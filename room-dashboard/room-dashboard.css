@@ -16,10 +16,6 @@ body {
     background: var(--bg-color);
 }
 
-#timeline{
-    width: 70%;
-}
-
 nav {
     position:fixed;
     top:0;
@@ -27,15 +23,14 @@ nav {
     -webkit-transition: background-color 1s linear;
 }
 
-main{
-    /* height: 80%; */
+main {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
 }
 
-.content{
+.content {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -136,10 +131,6 @@ input {
     color: red;
 }
 
-.heading {
-    display: flex;
-    border: 1px solid #000;
-    border-radius: 5px;
-    background-color: rgba(185, 184, 184, 0.3);
-    margin-top: 2rem;
+#timeline {
+    width: 70%;
 }

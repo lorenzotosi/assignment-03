@@ -2,7 +2,7 @@
 
 $data = json_decode(file_get_contents("php://input"), true);
 
-// TODO ogni tot secondi bisogna ricevere in ogni caso i dati e aggiornare l'end datetime con now
+// ogni tot secondi bisogna ricevere in ogni caso i dati e aggiornare l'end datetime con now
 // sistemare adjustArray di conseguenza
 // dentro deve controllare se il nuovo elemento ha lo stesso status dell'ultimo
 // se non lo ho aggiungere il nuovo elemento, altrimenti aggiornare l'ultimo
