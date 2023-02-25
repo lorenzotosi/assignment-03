@@ -45,8 +45,8 @@ main{
 }
 
 input[type="range"] {
-    appearance: slider-vertical;
-    -webkit-appearance: slider-vertical
+    transform: rotate(270deg);
+    -moz-transform: rotate(270deg);
 }
 
 input {
