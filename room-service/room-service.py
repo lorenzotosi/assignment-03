@@ -1,7 +1,16 @@
-import json, cgi
+import json, cgi, keyboard
 import paho.mqtt.client as paho
 import requests as req
 from datetime import datetime
+
+def on_key_press(key):
+    global stop
+    if key.name == "s":
+        stop = Trues
+        client.loop_stop()
+        client.disconnect()
+        print("Stopping loop")
+        exit()
 
 def on_subscribe(client, userdata, mid, granted_qos):
     print("Subscribed: "+str(mid)+" "+str(granted_qos))
@@ -90,8 +99,12 @@ post_data = cgi.FieldStorage()
 post_type = post_data.getvalue("type")
 post_value = post_data.getvalue("value")
 
-
-# client.loop_forever()
+keyboard.on_press(on_key_press)
+stop = False
+#client.loop_start()
 
 print("Starting loop")
+
+while stop == False:
+    pass
 
