@@ -1,4 +1,4 @@
-import json
+import json, cgi
 import paho.mqtt.client as paho
 import requests as req
 from datetime import datetime
@@ -84,6 +84,11 @@ client.on_connect = on_connect
 client.on_subscribe = on_subscribe
 client.on_message = on_message
 url = "http://localhost/assignment-03/room-dashboard/room-dashboard-history.php"
+
+
+post_data = cgi.FieldStorage()
+post_type = post_data.getvalue("type")
+post_value = post_data.getvalue("value")
 
 
 # client.loop_forever()
