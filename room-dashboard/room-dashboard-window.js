@@ -40,7 +40,6 @@ function handleSlider(slider) {
         slider.removeEventListener("mousemove", function () {
             slideRollerBlinds(this.value);
         });
-
     });
     slider.addEventListener("click", function () {
         slideRollerBlinds(this.value);
@@ -51,6 +50,8 @@ function slideRollerBlinds(value) {
     document.getElementById("close").style.top = -value * 0.85 + "%";
     if (value == 0) {
         document.getElementById("window-status").innerHTML = "closed";
+    } else if (value == 100) {
+        document.getElementById("window-status").innerHTML = "completely open";
     } else {
         document.getElementById("window-status").innerHTML = "open at " + value + "%";
     }
