@@ -52,7 +52,7 @@ function slideRollerBlinds(value) {
     } else {
         document.getElementById("window-status").innerHTML = "open at " + value + "%";
     }
-    axios.post("room-dashboard-window.php", { Type: "window", Value: value });
+    axios.post("room-dashboard-window.php", { Type: "window", Value: value }).then(response => { });
 }
 
 function checkLights(isOn) {
@@ -60,7 +60,7 @@ function checkLights(isOn) {
     document.getElementById("lights-status").style.color = isOn ? "green" : "red";
     document.getElementById(isOn ? "light-on" : "light-off").style.opacity = "1";
     document.getElementById(isOn ? "light-off" : "light-on").style.opacity = "0";
-    axios.post("room-dashboard-window.php", { Type: "lights", Value: isOn });
+    axios.post("room-dashboard-window.php", { Type: "lights", Value: isOn }).then(response => { });
 }
 
 function changeBackground(isNight) {
