@@ -3,6 +3,7 @@ const end = new Date().setHours(19, 0, 0);
 let now = new Date();
 let isNight = start < now && now < end ? false : true;
 document.documentElement.setAttribute("data-theme", !isNight ? "dark" : "light");
+let backgroundColor = !isNight ? "#323438" : "#f5f5f5";
 
 window.onload = function () {
     google.charts.load("current", { "packages": ["timeline", "line", "corechart"] });
@@ -46,7 +47,7 @@ function drawWindowLog(data) {
         dataTable.addRow([element.status, new Date(element.start), new Date(element.end)]);
     });
     let options = {
-        backgroundColor: "#323438",
+        backgroundColor: backgroundColor,
         colors: ["black"],
     };
     chart.draw(dataTable, google.charts.Line.convertOptions(options));
@@ -63,7 +64,7 @@ function drawLightsLog(data) {
         dataTable.addRow([element.status, new Date(element.start), new Date(element.end)]);
     });
     let options = {
-        backgroundColor: "#323438",
+        backgroundColor: backgroundColor,
         colors: ["green", "red"],
     };
     chart.draw(dataTable, options);
@@ -88,7 +89,7 @@ function drawLightsUsage(data) {
         ["Off", sumOff]
     ]);
     let options = {
-        backgroundColor: "#323438",
+        backgroundColor: backgroundColor,
         colors: ["green", "red"],
         is3D: true,
         legendTextStyle: {
@@ -110,10 +111,12 @@ function changeBackground(isNight) {
         nav.classList.remove("bg-light");
         nav.classList.add("navbar-dark");
         nav.classList.add("bg-dark");
+        backgroundColor = "#323438";
     } else {
         document.documentElement.setAttribute("data-theme", "light");
         nav.classList.remove("bg-dark");
         nav.classList.remove("navbar-dark");
         nav.classList.add("bg-light");
+        backgroundColor = "#f5f5f5";
     }
 }
