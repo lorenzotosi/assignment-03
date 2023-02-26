@@ -26,6 +26,7 @@ def callback(client, userdata, message):
     
     
 def on_message(client, userdata, msg):
+    global light_status, window_status, first_entry, url
     print(msg.topic+" "+str(msg.qos)+" "+str(msg.payload))
     decoded_message = msg.payload.decode("utf-8")
     now = datetime.now().strftime("%H:%M:%S")
