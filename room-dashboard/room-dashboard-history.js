@@ -1,5 +1,8 @@
-// TODO: controllare isNight dal json
-document.documentElement.setAttribute("data-theme", "dark");
+const start = new Date().setHours(8, 0, 0);
+const end = new Date().setHours(19, 0, 0);
+let now = new Date();
+let isNight = start < now && now < end ? false : true;
+document.documentElement.setAttribute("data-theme", !isNight ? "dark" : "light");
 
 window.onload = function () {
     google.charts.load("current", { "packages": ["timeline", "line", "corechart"] });
@@ -7,9 +10,7 @@ window.onload = function () {
 
     document.querySelector("body").style.transitionDuration = "1s";
 
-    let isNight = true;
-    changeBackground(isNight);
-    isNight = !isNight;
+    changeBackground(!isNight);
 };
 
 window.onresize = function () {

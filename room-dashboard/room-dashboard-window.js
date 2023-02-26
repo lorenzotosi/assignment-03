@@ -1,14 +1,18 @@
-// TODO: controllare isNight dal json
-document.documentElement.setAttribute("data-theme", "dark");
+const start = new Date().setHours(8, 0, 0);
+const end = new Date().setHours(20, 0, 0);
+let now = new Date();
+let isNight = start < now && now < end ? false : true;
+document.documentElement.setAttribute("data-theme", isNight ? "dark" : "light");
+
 window.onload = function () {
     document.querySelector("body").style.transitionDuration = "1s";
+
+    updateClock();
 
     const slider = document.getElementById("slider");
     handleSlider(slider);
 
-    let isNight = true;
     changeBackground(isNight);
-    isNight = !isNight;
 
     let isOn = false;
     lightSwitches = document.querySelectorAll(".light-switch");
@@ -18,13 +22,6 @@ window.onload = function () {
             checkLights(isOn);
         });
     });
-
-    // SOLO PER TEST: ------
-    document.getElementById("test").addEventListener("click", function () {
-        changeBackground(isNight);
-        isNight = !isNight;
-    });
-    // ----------------------
 };
 
 function handleSlider(slider) {
@@ -71,18 +68,25 @@ function changeBackground(isNight) {
     const day = document.getElementById("day");
     const nav = document.querySelector("nav");
     if (isNight) {
+        document.documentElement.setAttribute("data-theme", "dark");
         day.style.opacity = "0";
         night.style.opacity = "1";
-        document.documentElement.setAttribute("data-theme", "dark");
         nav.classList.remove("bg-light");
         nav.classList.add("navbar-dark");
         nav.classList.add("bg-dark");
     } else {
+        document.documentElement.setAttribute("data-theme", "light");
         night.style.opacity = "0";
         day.style.opacity = "1";
-        document.documentElement.setAttribute("data-theme", "light");
         nav.classList.remove("bg-dark");
         nav.classList.remove("navbar-dark");
         nav.classList.add("bg-light");
     }
 }
+
+function updateClock() {
+    const clock = document.getElementById("clock");
+    let currentTime = new Date().toLocaleTimeString("en-US", { hour12: false, hour: "2-digit", minute: "2-digit", second: "2-digit" });
+    clock.innerHTML = currentTime;
+}
+setInterval(updateClock, 1000);
