@@ -32,19 +32,22 @@ main {
     margin-top: 2rem;
 }
 
-.content {
+.window {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    margin-bottom: 2rem;
 }
 
-.element {
+.element,
+.graph {
     background-color: var(--element-bg-color);
     border-radius: 10px;
     border: 1px solid #000;
     padding: 1rem;
     gap: 1rem;
+    margin: 0 2rem;
     box-shadow: var(--shadow);
 }
 
@@ -90,7 +93,7 @@ input {
     cursor: pointer;
 }
 
-.window {
+.window-image {
     position: relative;
     overflow: hidden;
     width: 260px;
@@ -99,7 +102,7 @@ input {
     max-height: 280px;
 }
 
-.window img {
+.window-image img {
     position: absolute;
     overflow: hidden;
     max-width: 260px;
@@ -139,6 +142,18 @@ input {
     color: red;
 }
 
-#timeline {
-    width: 70%;
+.graph {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+}
+
+.graph-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-shadow: var(--shadow);
+    text-align: center;
+    margin: 0;
 }

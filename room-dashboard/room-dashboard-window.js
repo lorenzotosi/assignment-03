@@ -60,7 +60,7 @@ function checkLights(isOn) {
     document.getElementById("lights-status").style.color = isOn ? "green" : "red";
     document.getElementById(isOn ? "light-on" : "light-off").style.opacity = "1";
     document.getElementById(isOn ? "light-off" : "light-on").style.opacity = "0";
-    axios.post("room-dashboard-window.php", { Type: "lights", Value: isOn }).then(response => { });
+    axios.post("room-dashboard-window.php", { Type: "lights", Value: isOn ? "On" : "Off" }).then(response => { });
 }
 
 function changeBackground(isNight) {
