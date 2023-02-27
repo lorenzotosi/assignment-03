@@ -2,21 +2,21 @@ const start = new Date().setHours(8, 0, 0);
 const end = new Date().setHours(19, 0, 0);
 let now = new Date();
 let isNight = start < now && now < end ? false : true;
-document.documentElement.setAttribute("data-theme", !isNight ? "dark" : "light");
-// let backgroundColor = !isNight ? "#323438" : "#f5f5f5";
+document.documentElement.setAttribute("data-theme", isNight ? "dark" : "light");
+let legendColor = isNight ? "white" : "black";
 
 window.onload = function () {
-    // google.charts.load("current", { "packages": ["timeline", "line", "corechart"] });
-    // google.charts.setOnLoadCallback(drawChart);
+    google.charts.load("current", { "packages": ["timeline", "line", "corechart"] });
+    google.charts.setOnLoadCallback(drawChart);
 
     document.querySelector("body").style.transitionDuration = "1s";
 
-    changeBackground(!isNight);
+    changeBackground(isNight);
 };
 
 window.onresize = function () {
-    // google.charts.load("current", { "packages": ["timeline", "line", "corechart"] });
-    // google.charts.setOnLoadCallback(drawChart);
+    google.charts.load("current", { "packages": ["timeline", "line", "corechart"] });
+    google.charts.setOnLoadCallback(drawChart);
 };
 
 function test() {
@@ -26,15 +26,15 @@ function test() {
 }
 
 
-// function drawChart() {
-//     axios.get("logs.json").then((response) => {
-//         let windowData = response.data["data"]["window-log"];
-//         let lightsData = response.data["data"]["lights-log"];
-//         drawWindowLog(windowData);
-//         drawLightsLog(lightsData);
-//         drawLightsUsage(lightsData);
-//     });
-// }
+function drawChart() {
+    axios.get("logs.json").then((response) => {
+        // let windowData = response.data["data"]["window-log"];
+        let lightsData = response.data["data"]["lights-log"];
+        // drawWindowLog(windowData);
+        drawLightsLog(lightsData);
+        drawLightsUsage(lightsData);
+    });
+}
 
 // function drawWindowLog(data) {
 //     const container = document.getElementById("window-log");
@@ -50,72 +50,139 @@ function test() {
 //             element.end.split(":").map(component => parseInt(component))
 //         ]);
 //     });
-//     let options = {
-//         backgroundColor: backgroundColor,
+//     const options = {
 //         colors: ["black"],
 //     };
 //     chart.draw(dataTable, google.charts.Line.convertOptions(options));
 // }
 
-// function drawLightsLog(data) {
-//     const container = document.getElementById("lights-log");
-//     const chart = new google.visualization.Timeline(container);
-//     const dataTable = new google.visualization.DataTable();
-//     dataTable.addColumn({ type: "string", id: "Status" });
-//     dataTable.addColumn({ type: "timeofday", id: "Start" });
-//     dataTable.addColumn({ type: "timeofday", id: "End" });
-//     data.forEach(element => {
-//         dataTable.addRow([
-//             element.status,
-//             convertTime(element.start),
-//             convertTime(element.end)
-//         ]);
-//     });
-//     let options = {
-//         backgroundColor: backgroundColor,
-//         colors: ["green", "red"],
-//     };
-//     chart.draw(dataTable, options);
-// }
+function drawLightsLog(data) {
+    const container = document.getElementById("lights-log");
+    const chart = new google.visualization.Timeline(container);
+    const dataTable = new google.visualization.DataTable();
+    dataTable.addColumn({ type: "string", id: "Status" });
+    dataTable.addColumn({ type: "string", id: "dummy bar label" });
+    dataTable.addColumn({ type: "string", role: "tooltip" });
+    dataTable.addColumn({ type: "datetime", id: "Start" });
+    dataTable.addColumn({ type: "datetime", id: "End" });
+    data.forEach(element => {
+        const tooltip = `
+            <div>
+                <div class="border-bottom p-2">
+                    <p class="mb-0"><b>Status:</b> ${element.status}</p>
+                </div>
+                <div class="p-2" style="width: max-content">
+                    <p class="mb-0"><b>Duration:</b> ${getTimeDifference(convertTime(element.end), convertTime(element.start))}</p>
+                </div>
+            </div>
+        `;
+        dataTable.addRow([
+            element.status,
+            null,
+            tooltip,
+            convertTime(element.start),
+            convertTime(element.end),
+        ]);
+        // options.hAxis.ticks.push(convertTime(element.start));
+        // options.hAxis.ticks.push(convertTime(element.end));
+    });
+    const options = {
+        colors: ["green", "red"],
+        hAxis: {
+            format: 'HH:MM',
+            gridlines: {
+                color: "transparent",
+            },
+            
+            // ticks: [],
+        },
+        timeline: {
+            rowLabelStyle: {
+                color: legendColor,
+                fontSize: 14,
+            },
+            barLabelStyle: {
+                color: legendColor,
+                fontSize: 14,
+            },
+        },
+        chxl: data.map(element => `0:|${convertTime(element.start).toLocaleTimeString()}|${convertTime(element.end).toLocaleTimeString()}`)
+    };
+    chart.draw(dataTable, options);
+}
 
-// function convertTime(timeString) {
-//     const [hours, minutes, seconds] = timeString.split(':').map(component => parseInt(component));
-//     const dateTime = new Date();
-//     dateTime.setHours(hours, minutes, seconds);
-//     const timeStamp = dateTime.getTime();
-//     const timeOfDay = [hours, minutes, seconds, timeStamp % 1000];
-//     return timeOfDay;
-// }
+function drawLightsUsage(data) {
+    const container = document.getElementById("lights-usage");
+    const chart = new google.visualization.PieChart(container);
+    let sumOn = "00:00:00";
+    let sumOff = "00:00:00";
+    data.forEach(element => {
+        if (element.status == "On") sumOn = sumTimes(sumOn, getTimeDifference(convertTime(element.end), convertTime(element.start)));
+        else sumOff = sumTimes(sumOff, getTimeDifference(convertTime(element.end), convertTime(element.start)));
+    });
+    const dataTable = google.visualization.arrayToDataTable([
+        ["Status", "Hours"],
+        ["On: " + sumOn, stringToSeconds(sumOn)],
+        ["Off: " + sumOff, stringToSeconds(sumOff)]
+    ]);
+    const options = {
+        backgroundColor: "transparent",
+        colors: ["green", "red"],
+        is3D: true,
+        legend: {
+            position: "right",
+            textStyle: {
+                color: legendColor,
+                fontSize: 14,
+            },
+        },
+        chartArea: {
+            left: 0,
+            top: 0,
+            width: "100%",
+            height: "100%",
+        },
+        pieSliceText: "percentage",
+        pieSliceTextStyle: {
+            fontSize: 14,
+        },
+        tooltip: {
+            trigger: "none",
+        }
+    };
+    chart.draw(dataTable, options);
+}
 
-// function drawLightsUsage(data) {
-//     const container = document.getElementById("lights-usage");
-//     const chart = new google.visualization.PieChart(container);
-//     let sumOn = 0;
-//     let sumOff = 0;
-//     data.forEach(element => {
-//         if (element.status == "On") sumOn += (new Date(element.end) - new Date(element.start)) / (3600000 * 24 * 30);
-//         else sumOff += (new Date(element.end) - new Date(element.start)) / (3600000 * 24 * 30);
-//     });
-//     const dataTable = google.visualization.arrayToDataTable([
-//         ["Status", "Hours"],
-//         ["On", sumOn],
-//         ["Off", sumOff]
-//     ]);
-//     let options = {
-//         backgroundColor: backgroundColor,
-//         colors: ["green", "red"],
-//         is3D: true,
-//         legendTextStyle: {
-//             color: "white",
-//             fontSize: 12,
-//         },
-//         pieSliceText: "value",
-//         legend: {
-//             position: "labeled",
-//         },
-//     };
-//     chart.draw(dataTable, options);
-// }
+function convertTime(timeString) {
+    const [hours, minutes, seconds] = timeString.split(":").map(component => parseInt(component));
+    const dateTime = new Date();
+    dateTime.setHours(hours, minutes, seconds);
+    return dateTime;
+}
+
+function stringToSeconds(timeString) {
+    const [hours, minutes, seconds] = timeString.split(":").map(component => parseInt(component));
+    return hours * 3600 + minutes * 60 + seconds;
+}
+
+function sumTimes(firstTime, secondTime) {
+    const endSeconds = stringToSeconds(firstTime);
+    const startSeconds = stringToSeconds(secondTime);
+    const totalSeconds = endSeconds + startSeconds;
+    const hours = Math.floor(totalSeconds / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const seconds = totalSeconds % 60;
+    return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+}
+
+function getTimeDifference(endDate, startDate) {
+    const millisDifference = Math.abs(endDate - startDate);
+    const secondsDifference = Math.round(millisDifference / 1000);
+    const hours = Math.floor(secondsDifference / 3660);
+    const minutes = Math.floor((secondsDifference % 3600) / 60);
+    const seconds = secondsDifference % 60;
+    return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+}
 
 function changeBackground(isNight) {
     const nav = document.querySelector("nav");
@@ -124,12 +191,12 @@ function changeBackground(isNight) {
         nav.classList.remove("bg-light");
         nav.classList.add("navbar-dark");
         nav.classList.add("bg-dark");
-        // backgroundColor = "#323438";
+        legendColor = "white";
     } else {
         document.documentElement.setAttribute("data-theme", "light");
         nav.classList.remove("bg-dark");
         nav.classList.remove("navbar-dark");
         nav.classList.add("bg-light");
-        // backgroundColor = "#f5f5f5";
+        legendColor = "black";
     }
 }
