@@ -4,5 +4,6 @@
 #include <Arduino.h>
 #include "rBlinds.h"
 #include "led.h"
+#include "Scheduler.h"
 
 #endif
