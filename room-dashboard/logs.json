@@ -2,18 +2,18 @@
     "data" : {
         "window-log" : [
             {
-                "status" : "Open",
+                "status" : "0",
                 "start" : "00:00:00",
                 "end" : "08:35:47"
             },
             {
-                "status" : "Closed",
+                "status" : "20",
                 "start" : "08:35:47",
-                "end" : "15:24:12"
+                "end" : "20:12:55"
             },
             {
-                "status" : "Open",
-                "start" : "15:24:12",
+                "status" : "100",
+                "start" : "20:12:55",
                 "end" : "23:15:34"
             }
         ],
@@ -26,11 +26,11 @@
             {
                 "status" : "Off",
                 "start" : "08:35:47",
-                "end" : "15:24:12"
+                "end" : "20:12:55"
             },
             {
                 "status" : "On",
-                "start" : "15:24:12",
+                "start" : "20:12:55",
                 "end" : "23:15:34"
             }
         ]

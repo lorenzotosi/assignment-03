@@ -113,6 +113,5 @@ while stop == False:
     if (data["window"] != window_status):
         window_status = data["window"]
         # TODO: send request to serial
-    print("Lights: " + light_status)
-    print("Window: " + str(window_status))
-    
+    print(light_status)
+    print(str(window_status))
