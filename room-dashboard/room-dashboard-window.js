@@ -1,5 +1,5 @@
 const start = new Date().setHours(8, 0, 0);
-const end = new Date().setHours(20, 0, 0);
+const end = new Date().setHours(19, 0, 0);
 let now = new Date();
 let isNight = start < now && now < end ? false : true;
 document.documentElement.setAttribute("data-theme", isNight ? "dark" : "light");
