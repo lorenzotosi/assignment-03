@@ -2,11 +2,6 @@
 
 $data = json_decode(file_get_contents("php://input"), true);
 
-// ogni tot secondi bisogna ricevere in ogni caso i dati e aggiornare l'end datetime con now
-// sistemare adjustArray di conseguenza
-// dentro deve controllare se il nuovo elemento ha lo stesso status dell'ultimo
-// se non lo ho aggiungere il nuovo elemento, altrimenti aggiornare l'ultimo
-
 if (isset($data)) {
     $jsonContent = json_decode(file_get_contents("logs.json"), true);
     if ($data["type"] == "window") {
@@ -38,11 +33,15 @@ function adjustArray($dataArray, $newElement)
     $totalTime += ($newElement["end"] - $newElement["start"]);
 
     while (($totalTime - ($dataArray[0]["end"] - $dataArray[0]["start"])) > 24 * 60 * 60) {
-        $deletedElement = array_shift($dataArray);
-        $totalTime -= ($deletedElement["end"] - $deletedElement["start"]);
+        $totalTime -= ($dataArray[0]["end"] - $dataArray[0]["start"]);
+        array_shift($dataArray);
     }
 
-    array_push($dataArray, $newElement);
+    if ($dataArray[count($dataArray) - 1]["status"] == $newElement["status"]) {
+        array_push($dataArray, $newElement);
+    } else {
+        $dataArray[count($dataArray) - 1]["end"] = $newElement["end"];
+    }
 
     if ($totalTime > 24 * 60 * 60) {
         $extraTime = 24 * 60 * 60 - $totalTime;
