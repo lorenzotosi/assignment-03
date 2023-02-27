@@ -1,4 +1,4 @@
-import json, cgi, keyboard
+import keyboard
 import paho.mqtt.client as paho
 import requests as req
 from datetime import datetime
@@ -28,7 +28,7 @@ def callback(client, userdata, message):
 
 
 def on_message(client, userdata, msg):
-    global light_status, window_status, first_entry, url
+    global light_status, window_status, first_entry, url_post
     print(msg.topic + " " + str(msg.qos) + " " + str(msg.payload))
     decoded_message = msg.payload.decode("utf-8")
     now = datetime.now().strftime("%H:%M:%S")
@@ -44,7 +44,7 @@ def on_message(client, userdata, msg):
                 },
                 "type": type,
             }
-            req.post(url, json=request)
+            req.post(url_post, json=request)
             # TODO: send request to serial
         if light_status == "Off":
             light_status = "On"
@@ -56,7 +56,7 @@ def on_message(client, userdata, msg):
                 },
                 "type": type,
             }
-            req.post(url, json=request)
+            req.post(url_post, json=request)
             # TODO: send request to serial
     else:
         if light_status == "On":
@@ -69,7 +69,7 @@ def on_message(client, userdata, msg):
                 },
                 "type": type,
             }
-            req.post(url, json=request)
+            req.post(url_post, json=request)
             # TODO: send request to serial
         if datetime.now().hour >= 19 and datetime.now().hour <= 8:
             first_entry = True
@@ -83,7 +83,7 @@ def on_message(client, userdata, msg):
                     },
                     "type": type,
                 }
-                req.post(url, json=request)
+                req.post(url_post, json=request)
                 # TODO: send request to serial
 
 
@@ -95,12 +95,8 @@ client.on_connect = on_connect
 # client.connect("broker.hivemq.com", 1883)
 client.on_subscribe = on_subscribe
 client.on_message = on_message
-url = "http://localhost/assignment-03/room-dashboard/room-dashboard-history.php"
-
-
-post_data = cgi.FieldStorage()
-post_type = post_data.getvalue("type")
-post_value = post_data.getvalue("value")
+url_post = "http://localhost/assignment-03/room-dashboard/room-dashboard-history.php"
+url_get = "http://localhost/assignment-03/room-dashboard/room-dashboard-window.php"
 
 keyboard.on_press(on_key_press)
 stop = False
@@ -109,4 +105,14 @@ stop = False
 print("Starting loop")
 
 while stop == False:
-    pass
+    response = req.get(url_get)
+    data = response.json()
+    if (data["lights"] != light_status):
+        light_status = data["lights"]
+        # TODO: send request to serial
+    if (data["window"] != window_status):
+        window_status = data["window"]
+        # TODO: send request to serial
+    print("Lights: " + light_status)
+    print("Window: " + str(window_status))
+    
