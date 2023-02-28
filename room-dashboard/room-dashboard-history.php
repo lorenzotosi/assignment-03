@@ -19,6 +19,8 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 
 function adjustArray($dataArray, $newElement)
 {
+    $dataArray[count($dataArray) - 1]["end"] = $newElement["start"];
+
     foreach ($dataArray as &$elementDate) {
         $elementDate["start"] = strtotime($elementDate["start"]);
         $elementDate["end"] = strtotime($elementDate["end"]);

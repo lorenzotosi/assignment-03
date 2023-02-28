@@ -42,6 +42,7 @@ function handleSlider(slider) {
         slider.removeEventListener("mousemove", function () {
             slideRollerBlinds(this.value);
         });
+        updateWindow(this.value);
     });
     slider.addEventListener("click", function () {
         slideRollerBlinds(this.value);
@@ -57,7 +58,17 @@ function slideRollerBlinds(value) {
     } else {
         document.getElementById("window-status").innerHTML = "open at " + value + "%";
     }
-    axios.post("room-dashboard-window.php", { Type: "window", Value: value }).then(response => { });
+}
+
+function updateWindow(value) {
+    const request = {
+        "content": {
+            "status": parseInt(value),
+            "start": new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' }),
+        },
+        "type": "window",
+    };
+    axios.post("room-dashboard-history.php", request).then();
 }
 
 function checkLights(isLightsOn) {
@@ -65,7 +76,14 @@ function checkLights(isLightsOn) {
     document.getElementById("lights-status").style.color = isLightsOn ? "green" : "red";
     document.getElementById(isLightsOn ? "light-on" : "light-off").style.opacity = "1";
     document.getElementById(isLightsOn ? "light-off" : "light-on").style.opacity = "0";
-    axios.post("room-dashboard-window.php", { Type: "lights", Value: isLightsOn ? "On" : "Off" }).then(response => { });
+    const request = {
+        "content": {
+            "status": isLightsOn ? "On" : "Off",
+            "start": new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' }),
+        },
+        "type": "lights",
+    };
+    axios.post("room-dashboard-history.php", request).then();
 }
 
 function changeBackground(isNight) {

@@ -9,14 +9,12 @@ let chartBackgroundColor = isNight ? "#686868" : "#c1e8ff";
 window.onload = function () {
     google.charts.load("current", { "packages": ["timeline", "line", "corechart"] });
     google.charts.setOnLoadCallback(drawChart);
-
     document.querySelector("body").style.transitionDuration = "1s";
-
     changeBackground(isNight);
 };
 
 window.onresize = function () {
-    google.charts.load("current", { "packages": ["timeline", "line", "corechart", "annotationchart"] });
+    google.charts.load("current", { "packages": ["timeline", "line", "corechart"] });
     google.charts.setOnLoadCallback(drawChart);
 };
 
