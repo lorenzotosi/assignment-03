@@ -2,17 +2,17 @@
     "data" : {
         "window-log" : [
             {
-                "status" : "0",
+                "status" : 0,
                 "start" : "00:00:00",
                 "end" : "08:35:47"
             },
             {
-                "status" : "20",
+                "status" : 20,
                 "start" : "08:35:47",
                 "end" : "20:12:55"
             },
             {
-                "status" : "100",
+                "status" : 100,
                 "start" : "20:12:55",
                 "end" : "23:15:34"
             }

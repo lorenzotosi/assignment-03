@@ -4,6 +4,7 @@ let now = new Date();
 let isNight = start < now && now < end ? false : true;
 document.documentElement.setAttribute("data-theme", isNight ? "dark" : "light");
 let legendColor = isNight ? "white" : "black";
+let chartBackgroundColor = isNight ? "#686868" : "#c1e8ff";
 
 window.onload = function () {
     google.charts.load("current", { "packages": ["timeline", "line", "corechart"] });
@@ -15,46 +16,104 @@ window.onload = function () {
 };
 
 window.onresize = function () {
-    google.charts.load("current", { "packages": ["timeline", "line", "corechart"] });
+    google.charts.load("current", { "packages": ["timeline", "line", "corechart", "annotationchart"] });
     google.charts.setOnLoadCallback(drawChart);
 };
 
+
+// TODO chiamare questa funzione
 function test() {
     axios.get("room-dashboard-history.php").then((response) => {
         console.log(response.data);
     });
 }
 
-
 function drawChart() {
     axios.get("logs.json").then((response) => {
-        // let windowData = response.data["data"]["window-log"];
+        let windowData = response.data["data"]["window-log"];
         let lightsData = response.data["data"]["lights-log"];
         // drawWindowLog(windowData);
         drawLightsLog(lightsData);
         drawLightsUsage(lightsData);
+        drawWindowLogg(windowData);
     });
 }
 
-// function drawWindowLog(data) {
-//     const container = document.getElementById("window-log");
-//     const chart = new google.charts.Line(container);
-//     const dataTable = new google.visualization.DataTable();
-//     dataTable.addColumn({ type: "string", id: "Status" });
-//     dataTable.addColumn({ type: "timeofday", id: "Start" });
-//     dataTable.addColumn({ type: "timeofday", id: "End" });
-//     data.forEach(element => {
-//         dataTable.addRow([
-//             element.status,
-//             element.start.split(":").map(component => parseInt(component)),
-//             element.end.split(":").map(component => parseInt(component))
-//         ]);
-//     });
-//     const options = {
-//         colors: ["black"],
-//     };
-//     chart.draw(dataTable, google.charts.Line.convertOptions(options));
-// }
+function drawWindowLogg(data) {
+    const chart = new CanvasJS.Chart("window-logg", {
+        axisY: {
+            interval: 10,
+            maximum: 100,
+            suffix: "%",
+            valueFormatString: "#"
+        },
+        data: [{
+            type: "stepLine",
+            yValueFormatString: "#0.0\"%\"",
+            xValueFormatString: "HH:mm:ss",
+            markerSize: 5,
+            dataPoints: [
+            ]
+        }]
+    });
+
+    data.forEach(element => {
+        chart.options.data[0].dataPoints.push({ x: convertTime(element.start), y: element.status });
+    });
+    chart.render();
+}
+
+
+function drawWindowLog(data) {
+    const container = document.getElementById("window-log");
+    const chart = new google.visualization.LineChart(container);
+    const dataTable = new google.visualization.DataTable();
+    dataTable.addColumn({ type: "datetime", id: "Start" });
+    // dataTable.addColumn({ type: "datetime", id: "End" });
+    // dataTable.addColumn({ type: "string", id: "dummy bar label" });
+    dataTable.addColumn({ type: "string", role: "tooltip" });
+    dataTable.addColumn({ type: "number", id: "Status" });
+    data.forEach(element => {
+        const tooltip = `
+            <div>
+                <div class="border-bottom p-2">
+                    <p class="mb-0 text-dark"><b>Status:</b> ${element.status}%</p>
+                </div>
+                <div class="p-2" style="width: max-content">
+                    <p class="mb-0 text-dark"><b>Time:</b> ${getTimeDifference(convertTime(element.end), convertTime(element.start))}</p>
+                </div>
+            </div>
+        `;
+        dataTable.addRow([
+            convertTime(element.start),
+            // convertTime(element.end),
+            // null,
+            tooltip,
+            element.status
+        ]);
+    });
+    const options = {
+        colors: ["black"],
+        curveType: "step",
+        chartArea: {
+            width: "85%",
+            height: "80%",
+        },
+        legend: {
+            position: "none"
+        },
+        backgroundColor: chartBackgroundColor,
+        hAxis: {
+            format: 'HH:MM',
+            color: legendColor,
+        },
+        vAxis: {
+            color: legendColor,
+            ticks: [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100],
+        },
+    };
+    chart.draw(dataTable, options);
+}
 
 function drawLightsLog(data) {
     const container = document.getElementById("lights-log");
@@ -69,10 +128,10 @@ function drawLightsLog(data) {
         const tooltip = `
             <div>
                 <div class="border-bottom p-2">
-                    <p class="mb-0"><b>Status:</b> ${element.status}</p>
+                    <p class="mb-0 text-dark"><b>Status:</b> ${element.status}</p>
                 </div>
                 <div class="p-2" style="width: max-content">
-                    <p class="mb-0"><b>Duration:</b> ${getTimeDifference(convertTime(element.end), convertTime(element.start))}</p>
+                    <p class="mb-0 text-dark"><b>Duration:</b> ${getTimeDifference(convertTime(element.end), convertTime(element.start))}</p>
                 </div>
             </div>
         `;
@@ -87,18 +146,18 @@ function drawLightsLog(data) {
         // options.hAxis.ticks.push(convertTime(element.end));
     });
     const options = {
+        backgroundColor: chartBackgroundColor,
         colors: ["green", "red"],
         hAxis: {
             format: 'HH:MM',
             gridlines: {
                 color: "transparent",
             },
-            
             // ticks: [],
         },
         timeline: {
             rowLabelStyle: {
-                color: legendColor,
+                color: "black",
                 fontSize: 14,
             },
             barLabelStyle: {
@@ -106,7 +165,7 @@ function drawLightsLog(data) {
                 fontSize: 14,
             },
         },
-        chxl: data.map(element => `0:|${convertTime(element.start).toLocaleTimeString()}|${convertTime(element.end).toLocaleTimeString()}`)
+        // chxl: data.map(element => `0:|${convertTime(element.start).toLocaleTimeString()}|${convertTime(element.end).toLocaleTimeString()}`)
     };
     chart.draw(dataTable, options);
 }
@@ -192,11 +251,13 @@ function changeBackground(isNight) {
         nav.classList.add("navbar-dark");
         nav.classList.add("bg-dark");
         legendColor = "white";
+        chartBackgroundColor = "#686868";
     } else {
         document.documentElement.setAttribute("data-theme", "light");
         nav.classList.remove("bg-dark");
         nav.classList.remove("navbar-dark");
         nav.classList.add("bg-light");
         legendColor = "black";
+        chartBackgroundColor = "#c1e8ff";
     }
 }

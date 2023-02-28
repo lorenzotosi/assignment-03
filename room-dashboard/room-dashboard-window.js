@@ -14,7 +14,7 @@ window.onload = function () {
 
     changeBackground(isNight);
 
-    let isOn = false;
+    let isOn = false; // prendere da axios
     lightSwitches = document.querySelectorAll(".light-switch");
     lightSwitches.forEach(element => {
         element.addEventListener("click", function () {

@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="room-dashboard.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
     <script src="https://www.gstatic.com/charts/loader.js"></script>
     <script src="room-dashboard-history.js"></script>
 </head>
@@ -38,17 +39,18 @@
     <main>
         <div class="graph">
             <p class="graph-title">Roller Blinds Logs</p>
-            <div id="window-log"></div>
+            <!-- <div id="window-log"></div> -->
+            <div id="window-logg"></div>
         </div>
         <div class="graph">
             <p class="graph-title">Light System Logs</p>
             <div id="lights-log"></div>
+            <div id="lights-logg"></div>
         </div>
         <div class="graph">
             <p class="graph-title">Light System Usage</p>
             <div id="lights-usage"></div>
         </div>
-        <button onclick="test()">test python</button>
     </main>
 </body>
 
