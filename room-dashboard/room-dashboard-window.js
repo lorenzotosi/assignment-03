@@ -6,26 +6,31 @@ document.documentElement.setAttribute("data-theme", isNight ? "dark" : "light");
 
 window.onload = function () {
     document.querySelector("body").style.transitionDuration = "1s";
-
     updateClock();
-
     const slider = document.getElementById("slider");
+    let isLightsOn;
+    setupSystem(slider, isLightsOn);
     handleSlider(slider);
-
     changeBackground(isNight);
-
-    let isOn = false; // prendere da axios
-    lightSwitches = document.querySelectorAll(".light-switch");
-    lightSwitches.forEach(element => {
+    document.querySelectorAll(".light-switch").forEach(element => {
         element.addEventListener("click", function () {
-            isOn = !isOn;
-            checkLights(isOn);
+            isLightsOn = !isLightsOn;
+            checkLights(isLightsOn);
         });
     });
 };
 
+function setupSystem(slider, isLightsOn) {
+    axios.get("logs.json").then((response) => {
+        let windowData = response.data["data"]["window-log"];
+        let lightsData = response.data["data"]["lights-log"];
+        slider.defaultValue = windowData[windowData.length - 1].status;
+        slideRollerBlinds(slider.defaultValue);
+        isLightsOn = lightsData[lightsData.length - 1].status == "On" ? true : false;
+    });
+}
+
 function handleSlider(slider) {
-    slider.defaultValue = 0;
     slider.addEventListener("mousedown", function () {
         document.getElementById("close").style.transition = "none";
         slider.addEventListener("mousemove", function () {
@@ -55,12 +60,12 @@ function slideRollerBlinds(value) {
     axios.post("room-dashboard-window.php", { Type: "window", Value: value }).then(response => { });
 }
 
-function checkLights(isOn) {
-    document.getElementById("lights-status").innerHTML = isOn ? "on" : "off";
-    document.getElementById("lights-status").style.color = isOn ? "green" : "red";
-    document.getElementById(isOn ? "light-on" : "light-off").style.opacity = "1";
-    document.getElementById(isOn ? "light-off" : "light-on").style.opacity = "0";
-    axios.post("room-dashboard-window.php", { Type: "lights", Value: isOn ? "On" : "Off" }).then(response => { });
+function checkLights(isLightsOn) {
+    document.getElementById("lights-status").innerHTML = isLightsOn ? "on" : "off";
+    document.getElementById("lights-status").style.color = isLightsOn ? "green" : "red";
+    document.getElementById(isLightsOn ? "light-on" : "light-off").style.opacity = "1";
+    document.getElementById(isLightsOn ? "light-off" : "light-on").style.opacity = "0";
+    axios.post("room-dashboard-window.php", { Type: "lights", Value: isLightsOn ? "On" : "Off" }).then(response => { });
 }
 
 function changeBackground(isNight) {
