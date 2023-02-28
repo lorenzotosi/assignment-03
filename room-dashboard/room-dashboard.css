@@ -147,7 +147,11 @@ input {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 1rem;
+}
+
+.graph:nth-child(2) {
+    max-height: 220px;
+    justify-content: start;
 }
 
 .graph-title {

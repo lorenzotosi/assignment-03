@@ -32,64 +32,48 @@ function drawChart() {
     axios.get("logs.json").then((response) => {
         let windowData = response.data["data"]["window-log"];
         let lightsData = response.data["data"]["lights-log"];
-        // drawWindowLog(windowData);
+        drawWindowLog(windowData);
         drawLightsLog(lightsData);
         drawLightsUsage(lightsData);
-        drawWindowLogg(windowData);
     });
 }
-
-function drawWindowLogg(data) {
-    const chart = new CanvasJS.Chart("window-logg", {
-        axisY: {
-            interval: 10,
-            maximum: 100,
-            suffix: "%",
-            valueFormatString: "#"
-        },
-        data: [{
-            type: "stepLine",
-            yValueFormatString: "#0.0\"%\"",
-            xValueFormatString: "HH:mm:ss",
-            markerSize: 5,
-            dataPoints: [
-            ]
-        }]
-    });
-
-    data.forEach(element => {
-        chart.options.data[0].dataPoints.push({ x: convertTime(element.start), y: element.status });
-    });
-    chart.render();
-}
-
 
 function drawWindowLog(data) {
     const container = document.getElementById("window-log");
     const chart = new google.visualization.LineChart(container);
     const dataTable = new google.visualization.DataTable();
-    dataTable.addColumn({ type: "datetime", id: "Start" });
-    // dataTable.addColumn({ type: "datetime", id: "End" });
-    // dataTable.addColumn({ type: "string", id: "dummy bar label" });
-    dataTable.addColumn({ type: "string", role: "tooltip" });
+    dataTable.addColumn({ type: "datetime", id: "Time" });
     dataTable.addColumn({ type: "number", id: "Status" });
+    dataTable.addColumn({ type: "string", role: "tooltip", p: { html: true } });
     data.forEach(element => {
-        const tooltip = `
-            <div>
-                <div class="border-bottom p-2">
-                    <p class="mb-0 text-dark"><b>Status:</b> ${element.status}%</p>
+        const tooltip = (stage) => {
+            tooltipContent = `
+                <div>
+                    <div class="border-bottom p-2">
+                        <p class="mb-0 text-dark"><b>Status:</b> ${element.status}%</p>
+                    </div>
+                    <div class="p-2" style="width: max-content">
+            `;
+            tooltipContent += stage == "start" ? `
+                        <p class="mb-0 text-dark"><b>Time:</b> ${element.start}</p>
+                        ` : `
+                        <p class="mb-0 text-dark"><b>Time:</b> ${element.end}</p>
+            `;
+            tooltipContent += `
+                    </div>
                 </div>
-                <div class="p-2" style="width: max-content">
-                    <p class="mb-0 text-dark"><b>Time:</b> ${getTimeDifference(convertTime(element.end), convertTime(element.start))}</p>
-                </div>
-            </div>
-        `;
+            `;
+            return tooltipContent;
+        };
         dataTable.addRow([
             convertTime(element.start),
-            // convertTime(element.end),
-            // null,
-            tooltip,
-            element.status
+            element.status,
+            tooltip("start"),
+        ]);
+        dataTable.addRow([
+            convertTime(element.end),
+            element.status,
+            tooltip("end"),
         ]);
     });
     const options = {
@@ -105,11 +89,19 @@ function drawWindowLog(data) {
         backgroundColor: chartBackgroundColor,
         hAxis: {
             format: 'HH:MM',
-            color: legendColor,
+            textStyle: {
+                color: legendColor,
+            },
         },
         vAxis: {
-            color: legendColor,
+            textStyle: {
+                color: legendColor,
+            },
             ticks: [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100],
+        },
+        lineWidth: 3,
+        tooltip: {
+            isHtml: true,
         },
     };
     chart.draw(dataTable, options);
@@ -124,6 +116,7 @@ function drawLightsLog(data) {
     dataTable.addColumn({ type: "string", role: "tooltip" });
     dataTable.addColumn({ type: "datetime", id: "Start" });
     dataTable.addColumn({ type: "datetime", id: "End" });
+    let dynamicTicks = [];
     data.forEach(element => {
         const tooltip = `
             <div>
@@ -142,9 +135,9 @@ function drawLightsLog(data) {
             convertTime(element.start),
             convertTime(element.end),
         ]);
-        // options.hAxis.ticks.push(convertTime(element.start));
-        // options.hAxis.ticks.push(convertTime(element.end));
+        dynamicTicks.push(convertTime(element.start).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
     });
+    dynamicTicks.push(convertTime(data[data.length - 1].end).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
     const options = {
         backgroundColor: chartBackgroundColor,
         colors: ["green", "red"],
@@ -153,7 +146,7 @@ function drawLightsLog(data) {
             gridlines: {
                 color: "transparent",
             },
-            // ticks: [],
+            ticks: dynamicTicks,
         },
         timeline: {
             rowLabelStyle: {
@@ -165,7 +158,6 @@ function drawLightsLog(data) {
                 fontSize: 14,
             },
         },
-        // chxl: data.map(element => `0:|${convertTime(element.start).toLocaleTimeString()}|${convertTime(element.end).toLocaleTimeString()}`)
     };
     chart.draw(dataTable, options);
 }
