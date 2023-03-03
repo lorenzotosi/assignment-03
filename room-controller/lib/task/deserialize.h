@@ -11,8 +11,11 @@ class Deserialize : public Task {
     Deserialize();
     void init(int period);
     void tick();
+    void read();
   private:
-    StaticJsonDocument<256> doc;
+    StaticJsonDocument<200> doc;
+    String content;
+    MsgServiceClass MsgService;
 };
 
 #endif
