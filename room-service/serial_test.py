@@ -10,7 +10,7 @@ x = 0;
 while True:
     #ser.write(str(x).encode('utf-8'))
     #ser.write(b'\n')
-    dictionary = {'d':x}
+    dictionary = {'d':'ciao'}
     jsonString = json.dumps(dictionary, indent=4)
     ser.write(jsonString.encode('utf-8'))
     ser.write(b'\n')
