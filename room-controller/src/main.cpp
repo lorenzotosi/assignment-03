@@ -1,22 +1,44 @@
 #include "includes.h"
-#include "MsgService.h"
-
 
 Scheduler s;
+Deserialize* d = new Deserialize();
 
-void setup() {
-  // put your setup code here, to run once:
+//StaticJsonDocument<256> doc;
+
+void setup()
+{
   Serial.begin(9600);
-  MsgService.init();
-  //s.init(1000);
-
+  //MsgService.init();
+  s.init(1000);
+  d->init(1000);
+  s.addTask(d);
 }
 
-void loop() {
-if (MsgService.isMsgAvailable()) {
-    Msg* msg = MsgService.receiveMsg();    
+void loop()
+{
+  s.schedule();
+  /*
+  if (MsgService.isMsgAvailable())
+  {
+    Msg *msg = MsgService.receiveMsg();
     Serial.println(msg->getContent());
+    DeserializationError error = deserializeJson(doc, Serial);
+
+    if (error)
+    {
+      Serial.print(F("deserializeJson() failed: "));
+      Serial.println(error.f_str());
+    }
+    else
+    {
+      Serial.println(F("deserializeJson() succeeded:"));
+      int x = doc["d"];
+      Serial.println(x);
+    }
+    
+    
     delete msg;
   }
-  
+  */
+
 }
