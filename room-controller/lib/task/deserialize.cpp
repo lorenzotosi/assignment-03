@@ -4,7 +4,6 @@ Deserialize::Deserialize()
 {
     MsgService.init();
     content = "";
-    content.reserve(200);
 }
 
 void Deserialize::init(int period)
@@ -14,12 +13,13 @@ void Deserialize::init(int period)
 
 void Deserialize::read()
 {
+    content = "";
     while (Serial.available())
     {
         char ch = (char)Serial.read();
         if (ch == '\n')
         {
-            MsgService.currentMsg = new Msg(content);
+            this->content = content;
             MsgService.msgAvailable = true;
         }
         else
@@ -34,10 +34,9 @@ void Deserialize::tick()
     this->read();
     if (MsgService.isMsgAvailable())
     {
-        Msg *msg = MsgService.receiveMsg();
-        Serial.println(msg->getContent());
+        MsgService.msgAvailable = false;
 
-        /*DeserializationError error = deserializeJson(doc, Serial);
+        DeserializationError error = deserializeJson(doc, content);
 
         if (error)
         {
@@ -49,12 +48,6 @@ void Deserialize::tick()
             Serial.println(F("deserializeJson() succeeded:"));
             int x = doc["d"];
             Serial.println(x);
-        }*/
-        delete msg;
+        }
     }
-    else
-    {
-        Serial.println("No message available");
-    }
-    content = "";
 }
