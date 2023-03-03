@@ -46,8 +46,9 @@ void Deserialize::tick()
         else
         {
             Serial.println(F("deserializeJson() succeeded:"));
-            int x = doc["d"];
+            String x = doc["d"];
             Serial.println(x);
         }
     }
+
 }

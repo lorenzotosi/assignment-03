@@ -7,11 +7,11 @@ class MsgServiceClass
 {
 
 public:
-	bool msgAvailable;
+    bool msgAvailable;
 
-	void init();
-	bool isMsgAvailable();
-	void sendMsg(const String &msg);
+    void init();
+    bool isMsgAvailable();
+    void sendMsg(const String &msg);
 };
 
 #endif
