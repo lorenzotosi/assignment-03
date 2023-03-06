@@ -17,8 +17,8 @@ body {
 }
 
 nav {
-    position:fixed;
-    top:0;
+    position: fixed;
+    top: 0;
     transition: background-color 1s linear;
     -webkit-transition: background-color 1s linear;
 }
