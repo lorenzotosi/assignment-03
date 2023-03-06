@@ -25,6 +25,8 @@ function adjustArray($dataArray, $newElement)
         $elementDate["start"] = strtotime($elementDate["start"]);
         $elementDate["end"] = strtotime($elementDate["end"]);
     }
+    unset($elementDate);
+
     $newElement["start"] = strtotime($newElement["start"]);
     $newElement["end"] = strtotime($newElement["end"]);
 
