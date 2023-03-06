@@ -23,7 +23,7 @@ def on_connect(client, userdata, flags, rc):
     client.subscribe("occupance", qos=1)
 
 
-def callback(client, userdata, message):
+def callback(message):
     print("message received ", str(message.payload.decode("utf-8")))
 
 
@@ -36,38 +36,38 @@ def on_message(client, userdata, msg):
         if first_entry:
             first_entry = False
             window_status = 100
-            type = "window"
+            component_type = "window"
             request = {
                 "content": {
                     "status": window_status,
                     "start": now,
                 },
-                "type": type,
+                "type": component_type,
             }
             req.post(url_post, json=request)
             # TODO: send request to serial
         if light_status == "Off":
             light_status = "On"
-            type = "lights"
+            component_type = "lights"
             request = {
                 "content": {
                     "status": light_status,
                     "start": now,
                 },
-                "type": type,
+                "type": component_type,
             }
             req.post(url_post, json=request)
             # TODO: send request to serial
     else:
         if light_status == "On":
             light_status = "Off"
-            type = "lights"
+            component_type = "lights"
             request = {
                 "content": {
                     "status": light_status,
                     "start": now,
                 },
-                "type": type,
+                "type": component_type,
             }
             req.post(url_post, json=request)
             # TODO: send request to serial
@@ -75,13 +75,13 @@ def on_message(client, userdata, msg):
             first_entry = True
             if window_status != 0:
                 window_status = 0
-                type = "window"
+                component_type = "window"
                 request = {
                     "content": {
                         "status": window_status,
                         "start": now,
                     },
-                    "type": type,
+                    "type": component_type,
                 }
                 req.post(url_post, json=request)
                 # TODO: send request to serial
