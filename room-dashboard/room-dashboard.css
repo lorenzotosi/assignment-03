@@ -13,7 +13,7 @@
 body {
     color: var(--font-color);
     background: var(--bg-color);
-    height: 100vh;
+    height: fit-content;
 }
 
 nav {
