@@ -44,6 +44,8 @@ main {
 
 .element,
 .graph {
+    min-width: 480px;
+    width: 50%;
     background-color: var(--element-bg-color);
     border-radius: 10px;
     border: 1px solid #000;
@@ -51,6 +53,13 @@ main {
     gap: 1rem;
     margin: 0 2rem;
     box-shadow: var(--shadow);
+}
+@media only screen and (max-width:550px) {
+    .element,
+    .graph {
+        width: 90%;
+        min-width: auto;
+    }
 }
 
 input[type="range"] {
