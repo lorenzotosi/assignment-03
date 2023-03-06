@@ -8,8 +8,7 @@ window.onload = function () {
     document.querySelector("body").style.transitionDuration = "1s";
     updateClock();
     const slider = document.getElementById("slider");
-    let isLightsOn;
-    setupSystem(slider, isLightsOn);
+    let isLightsOn = setupSystem(slider);
     handleSlider(slider);
     changeBackground(isNight);
     document.querySelectorAll(".light-switch").forEach(element => {
@@ -20,14 +19,15 @@ window.onload = function () {
     });
 };
 
-function setupSystem(slider, isLightsOn) {
-    axios.get("logs.json").then((response) => {
-        let windowData = response.data["data"]["window-log"];
-        let lightsData = response.data["data"]["lights-log"];
-        slider.defaultValue = windowData[windowData.length - 1].status;
-        slideRollerBlinds(slider.defaultValue);
-        isLightsOn = lightsData[lightsData.length - 1].status == "On" ? true : false;
-    });
+function setupSystem(slider) {
+    return () =>
+        axios.get("logs.json").then((response) => {
+            let windowData = response.data["data"]["window-log"];
+            let lightsData = response.data["data"]["lights-log"];
+            slider.defaultValue = windowData[windowData.length - 1].status;
+            slideRollerBlinds(slider.defaultValue);
+            return lightsData[lightsData.length - 1].status == "On" ? true : false;
+        });
 }
 
 function handleSlider(slider) {

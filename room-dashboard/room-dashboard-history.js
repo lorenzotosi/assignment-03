@@ -45,7 +45,7 @@ function drawWindowLog(data) {
     dataTable.addColumn({ type: "string", role: "tooltip", p: { html: true } });
     data.forEach(element => {
         const tooltip = (stage) => {
-            tooltipContent = `
+            let tooltipContent = `
                 <div>
                     <div class="border-bottom p-2">
                         <p class="mb-0 text-dark"><b>Status:</b> ${element.status}%</p>
