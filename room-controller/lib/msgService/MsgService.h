@@ -48,6 +48,8 @@ public:
 
 void readSerialMessage(bool useBT, bool useSerial);
 
+String read();
+
 extern MsgServiceSerial MsgService;
 extern MsgServiceBluetooth MsgServiceBT;
 
