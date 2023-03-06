@@ -13,6 +13,6 @@ while True:
     dictionary = {'d':x}
     jsonString = json.dumps(dictionary, indent=4)
     ser.write(jsonString.encode('utf-8'))
-    #ser.write(b'\n')
+    ser.write(b'\n')
     x = x + 1
     time.sleep(1)
