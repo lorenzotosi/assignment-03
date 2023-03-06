@@ -7,7 +7,7 @@
 #include "Scheduler.h"
 #include "MsgService.h"
 #include <ArduinoJson.h>
-#include <BluetoothSerial.h>
+#include <SoftwareSerial.h>
 #include "deserialize.h"
 
 #endif

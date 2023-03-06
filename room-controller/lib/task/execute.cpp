@@ -4,7 +4,8 @@ Execute::Execute(led *light, rBlinds *rollerBlinds)
 {
     this->light = light;
     this->rollerBlinds = rollerBlinds;
-    this->SerialBT.begin("");
+    this->serialBT = new SoftwareSerial(2, 3); // TODO pin giusti
+    serialBT->begin(9600);
 }
 
 void Execute::init(int period)
@@ -14,9 +15,9 @@ void Execute::init(int period)
 
 void Execute::tick()
 {
-    if (SerialBT.available())
+    if (serialBT.available())
     {
-        String btMsg = SerialBT.read();
+        String btMsg = serialBT.read();
         Serial.println(btMsg);
         StaticJsonDocument<200> doc;
         deserializeJson(doc, btMsg);

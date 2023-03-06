@@ -17,7 +17,7 @@ public:
 private:
     led *light;
     rBlinds *rollerBlinds;
-    BluetoothSerial SerialBT;
+    SoftwareSerial *serialBT;
 };
 
 #endif __EXECUTE_H__
