@@ -12,7 +12,8 @@ class Deserialize : public Task {
     void init(int period);
     void tick();
   private:
-    StaticJsonDocument<256> doc;
+    DynamicJsonDocument doc = DynamicJsonDocument(256);
+    Msg *msg = NULL;
 };
 
 #endif
