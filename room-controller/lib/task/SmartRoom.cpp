@@ -49,6 +49,12 @@ void SmartRoom::tick()
         updateRoom(Message.get());
     }
 
+    MessageBT.read();
+    if (MessageBT.isMsgArrived())
+    {
+        updateRoom(MessageBT.get());
+    }
+
     // manca il bluetooth, uguale a sopra
 }
 

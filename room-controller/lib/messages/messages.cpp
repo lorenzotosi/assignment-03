@@ -57,7 +57,7 @@ void MessagesBT::read()
     payload = "";
     while (channel->available())
     {
-        payload = Serial.readStringUntil('\n');
+        payload = channel->readStringUntil('\n');
         msgArrived = true;
     }
 }
