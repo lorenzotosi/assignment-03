@@ -4,18 +4,14 @@
 Scheduler s;
 Deserialize *d = new Deserialize();
 
-//StaticJsonDocument<256> doc;
 
 void setup()
 {
-    //MsgServiceBT.init();
     Serial.begin(9600);
-    //MsgService.init();
     s.init(1000);
     d->init(1000);
     s.addTask(d);
     while (!Serial){}
-    //readSerialMessage(false, true);
     Serial.println("ready to go.");  
 }
 

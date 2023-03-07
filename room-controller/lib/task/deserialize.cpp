@@ -7,7 +7,7 @@ Deserialize::Deserialize()
 
 void Deserialize::init(int period)
 {
-
+    Message.init();
     Task::init(period);
 }
 
