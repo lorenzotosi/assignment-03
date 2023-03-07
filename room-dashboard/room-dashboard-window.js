@@ -19,14 +19,15 @@ window.onload = function () {
     changeBackground(isNight);
 };
 
-function setupSystem(slider, isLightsOn) {
-    axios.get("logs.json").then((response) => {
-        let windowData = response.data["data"]["window-log"];
-        let lightsData = response.data["data"]["lights-log"];
-        slider.defaultValue = windowData[windowData.length - 1].status;
-        slideRollerBlinds(slider.defaultValue);
-        isLightsOn = lightsData[lightsData.length - 1].status == "On" ? true : false;
-    });
+function setupSystem(slider) {
+    return () =>
+        axios.get("logs.json").then((response) => {
+            let windowData = response.data["data"]["window-log"];
+            let lightsData = response.data["data"]["lights-log"];
+            slider.defaultValue = windowData[windowData.length - 1].status;
+            slideRollerBlinds(slider.defaultValue);
+            return lightsData[lightsData.length - 1].status == "On" ? true : false;
+        });
 }
 
 function handleSlider(slider) {
