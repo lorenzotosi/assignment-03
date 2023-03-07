@@ -15,7 +15,6 @@ class Deserialize : public Task {
   private:
     StaticJsonDocument<200> doc;
     String content;
-    MsgServiceClass MsgService;
 };
 
 #endif

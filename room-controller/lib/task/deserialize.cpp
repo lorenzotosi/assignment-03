@@ -31,7 +31,8 @@ void Deserialize::read()
 
 void Deserialize::tick()
 {
-    this->read();
+    /*this->read();
+    
     if (MsgService.isMsgAvailable())
     {
         MsgService.msgAvailable = false;
@@ -50,6 +51,7 @@ void Deserialize::tick()
             Serial.println(x);
         }
         fflush(stdout);
-    }
+    }*/
 
+    
 }
