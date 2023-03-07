@@ -3,17 +3,19 @@
 
 #include <Arduino.h>
 
-class led {
-    public:
-        led(int pin);
-        void initialize();
-        void on();
-        void off();
-        void toggle();
-    private:
-        int _pin;
-        bool _state;
-        
+class led
+{
+public:
+    led(int pin);
+    void initialize();
+    void on();
+    void off();
+    void toggle();
+    bool isOn();
+
+private:
+    int _pin;
+    bool _state;
 };
 
 #endif
