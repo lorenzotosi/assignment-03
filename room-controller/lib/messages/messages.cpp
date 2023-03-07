@@ -1,6 +1,7 @@
 #include "messages.h"
 
 Messages Message;
+MessagesBT MessageBT;
 
 Messages::Messages()
 {
@@ -32,3 +33,38 @@ void Messages::send()
     // serializeJson(doc, payload);
     // Serial.println(payload);
 }
+
+
+MessagesBT::MessagesBT(int rxPin, int txPin)
+{
+    channel = new SoftwareSerial(rxPin, txPin);
+    channel->begin(9600);
+}
+
+void MessagesBT::init()
+{
+    payload = "";
+    msgArrived = false;
+}
+
+bool MessagesBT::isMsgArrived()
+{
+    return msgArrived;
+}
+
+void MessagesBT::read()
+{
+    payload = "";
+    while (channel->available())
+    {
+        payload = Serial.readStringUntil('\n');
+        msgArrived = true;
+    }
+}
+
+void MessagesBT::send()
+{
+    // serializeJson(doc, payload);
+    // Serial.println(payload);
+}
+
