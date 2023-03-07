@@ -8,15 +8,15 @@ window.onload = function () {
     document.querySelector("body").style.transitionDuration = "1s";
     updateClock();
     const slider = document.getElementById("slider");
+    const lightSwitch = document.querySelector(".light");
     let isLightsOn = setupSystem(slider);
+    lightSwitch.addEventListener("click", function () {
+        isLightsOn = !isLightsOn;
+        checkLights(isLightsOn);
+    });
+    lightSwitch.click();
     handleSlider(slider);
     changeBackground(isNight);
-    document.querySelectorAll(".light-switch").forEach(element => {
-        element.addEventListener("click", function () {
-            isLightsOn = !isLightsOn;
-            checkLights(isLightsOn);
-        });
-    });
 };
 
 function setupSystem(slider) {

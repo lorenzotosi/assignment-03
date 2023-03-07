@@ -1,14 +1,21 @@
+#include "Arduino.h"
 #include "MsgService.h"
+#include "SoftwareSerial.h"
+
+#define RX_PIN 2  // to be connected to TX of the BT module
+#define TX_PIN 3  // to be connected to RX of the BT module
 
 String content;
+SoftwareSerial channel(RX_PIN, TX_PIN);
 
-MsgServiceClass MsgService;
+MsgServiceSerial MsgService;
+MsgServiceBluetooth MsgServiceBT;
 
-bool MsgServiceClass::isMsgAvailable(){
+bool MsgServiceSerial::isMsgAvailable(){
   return msgAvailable;
 }
 
-Msg* MsgServiceClass::receiveMsg(){
+Msg* MsgServiceSerial::receiveMsg(){
   if (msgAvailable){
     Msg* msg = currentMsg;
     msgAvailable = false;
@@ -20,37 +27,24 @@ Msg* MsgServiceClass::receiveMsg(){
   }
 }
 
-void MsgServiceClass::init(){
+void MsgServiceSerial::init(){
   Serial.begin(9600);
-  content.reserve(256);
+  content.reserve(128);
   content = "";
   currentMsg = NULL;
   msgAvailable = false;  
 }
 
-void MsgServiceClass::sendMsg(const String& msg){
+void MsgServiceSerial::sendMsg(const String& msg){
   Serial.println(msg);  
 }
 
-void serialEvent() {
-  /* reading the content */
-  while (Serial.available()) {
-    char ch = (char) Serial.read();
-    if (ch == '\n'){
-      MsgService.currentMsg = new Msg(content);
-      MsgService.msgAvailable = true;      
-    } else {
-      content += ch;      
-    }
-  }
+bool MsgServiceBluetooth::isMsgAvailable(){
+  return msgAvailable;
 }
 
-bool MsgServiceClass::isMsgAvailable(Pattern& pattern){
-  return (msgAvailable && pattern.match(*currentMsg));
-}
-
-Msg* MsgServiceClass::receiveMsg(Pattern& pattern){
-  if (msgAvailable && pattern.match(*currentMsg)){
+Msg* MsgServiceBluetooth::receiveMsg(){
+  if (msgAvailable){
     Msg* msg = currentMsg;
     msgAvailable = false;
     currentMsg = NULL;
@@ -59,5 +53,47 @@ Msg* MsgServiceClass::receiveMsg(Pattern& pattern){
   } else {
     return NULL; 
   }
-  
+}
+
+void MsgServiceBluetooth::init(){
+  channel.begin(9600);
+  content.reserve(128);
+  content = "";
+  currentMsg = NULL;
+  msgAvailable = false;  
+}
+
+void MsgServiceBluetooth::sendMsg(const String& msg){
+  Serial.println(msg);  
+}
+
+
+void readSerialMessage(bool useBT, bool useSerial){
+  if(useSerial){
+    while (Serial.available()) {
+      char ch = (char) Serial.read();
+      if (ch == '\n'){      
+        if (content.length() > 0) {
+            MsgService.currentMsg = new Msg(content);
+            MsgService.msgAvailable = true;
+        }
+      } else {
+        content += ch;      
+      }
+    }
+  }
+  if(useBT){
+    while (channel.available()) {
+      char ch = (char) channel.read();
+      if (ch == '\n'){   
+        if (content.length() > 0) {
+            content.trim();
+            MsgServiceBT.currentMsg = new Msg(content);
+            MsgServiceBT.msgAvailable = true;
+        }
+      } else {
+        content += ch;      
+      }
+    }
+  }
 }

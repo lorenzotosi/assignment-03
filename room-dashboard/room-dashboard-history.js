@@ -33,6 +33,11 @@ function drawChart() {
         drawWindowLog(windowData);
         drawLightsLog(lightsData);
         drawLightsUsage(lightsData);
+        document.querySelectorAll("svg").forEach((element) => {
+            let divWidth = element.parentElement.parentElement.parentElement.parentElement.parentElement.offsetWidth * 0.002;
+            element.setAttribute("style", `transform: scale(${divWidth})`);
+            element.style.maxHeight = "200px !important";
+        });
     });
 }
 
@@ -250,4 +255,4 @@ function changeBackground(isNight) {
         legendColor = "black";
         chartBackgroundColor = "#c1e8ff";
     }
-}
+};

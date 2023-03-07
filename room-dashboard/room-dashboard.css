@@ -13,14 +13,16 @@
 body {
     color: var(--font-color);
     background: var(--bg-color);
-    height: 100vh;
+    height: fit-content;
 }
 
 nav {
-    position: fixed;
-    top: 0;
+    width: 100%;
+    position: fixed !important;
+    top:0;
     transition: background-color 1s linear;
     -webkit-transition: background-color 1s linear;
+    z-index: 1;
 }
 
 main {
@@ -29,7 +31,7 @@ main {
     align-items: center;
     justify-content: center;
     gap: 2rem;
-    margin-top: 2rem;
+    margin-top: calc(2rem + 3rem);
 }
 
 .window {
@@ -37,11 +39,13 @@ main {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin-bottom: 2rem;
+    margin-bottom: 2rem !important;
 }
 
 .element,
 .graph {
+    min-width: 480px;
+    width: 50%;
     background-color: var(--element-bg-color);
     border-radius: 10px;
     border: 1px solid #000;
@@ -49,6 +53,13 @@ main {
     gap: 1rem;
     margin: 0 2rem;
     box-shadow: var(--shadow);
+}
+@media only screen and (max-width:550px) {
+    .element,
+    .graph {
+        width: 90%;
+        min-width: auto;
+    }
 }
 
 input[type="range"] {

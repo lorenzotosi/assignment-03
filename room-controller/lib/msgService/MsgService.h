@@ -1,7 +1,7 @@
 #ifndef __MSGSERVICE__
 #define __MSGSERVICE__
 
-#include <Arduino.h>
+#include "Arduino.h"
 
 class Msg {
   String content;
@@ -16,12 +16,7 @@ public:
   }
 };
 
-class Pattern {
-public:
-  virtual boolean match(const Msg& m) = 0;  
-};
-
-class MsgServiceClass {
+class MsgServiceSerial {
     
 public: 
   
@@ -33,14 +28,27 @@ public:
   bool isMsgAvailable();
   Msg* receiveMsg();
 
-  bool isMsgAvailable(Pattern& pattern);
-
-  /* note: message deallocation is responsibility of the client */
-  Msg* receiveMsg(Pattern& pattern);
-  
   void sendMsg(const String& msg);
 };
 
-extern MsgServiceClass MsgService;
+class MsgServiceBluetooth {
+    
+public: 
+
+  Msg* currentMsg;
+  bool msgAvailable;
+
+  void init();  
+
+  bool isMsgAvailable();
+  Msg* receiveMsg();  
+ 
+  void sendMsg(const String& msg);
+};
+
+void readSerialMessage(bool useBT, bool useSerial);
+
+extern MsgServiceSerial MsgService;
+extern MsgServiceBluetooth MsgServiceBT;
 
 #endif
