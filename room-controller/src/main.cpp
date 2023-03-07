@@ -1,4 +1,4 @@
-/*
+
 #include "includes.h"
 
 Scheduler s;
@@ -9,7 +9,7 @@ Deserialize *d = new Deserialize();
 void setup()
 {
     //MsgServiceBT.init();
-    //Serial.begin(9600);
+    Serial.begin(9600);
     //MsgService.init();
     s.init(1000);
     d->init(1000);
@@ -23,7 +23,8 @@ void loop()
 {
     s.schedule();
 }
-*/
+
+/*
 #include <ArduinoJson.h>
 void setup() {
   Serial.begin(9600); 
@@ -43,7 +44,7 @@ void loop() {
     Serial.println(error.c_str()); 
     return;
   }
-  if (doc["operation"] == "sequenze") {
+  if (doc["luce"] == 1) {
     int x = doc["luce"];
     int y = doc["tapparelle"];
     Serial.print(x);
@@ -55,3 +56,4 @@ void loop() {
    }
   delay(1);
 }
+*/

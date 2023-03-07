@@ -3,7 +3,7 @@
 
 #include <Arduino.h>
 #include <ArduinoJson.h>
-#include "MsgService.h"
+#include "messages.h"
 #include "Task.h"
 
 class Deserialize : public Task {
@@ -13,7 +13,7 @@ class Deserialize : public Task {
     void tick();
   private:
     DynamicJsonDocument doc = DynamicJsonDocument(256);
-    Msg *msg = NULL;
+
 };
 
 #endif

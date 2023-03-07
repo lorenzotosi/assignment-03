@@ -2,42 +2,34 @@
 
 Deserialize::Deserialize()
 {
+    pinMode(13, OUTPUT);
 }
 
 void Deserialize::init(int period)
 {
-    MsgService.init();
-    MsgServiceBT.init();
+
     Task::init(period);
 }
 
 void Deserialize::tick()
 {
-    readSerialMessage(false, true);
-    if (MsgService.isMsgAvailable())
+    Message.read();
+    if (Message.isMsgArrived())
     {
-        msg = MsgService.receiveMsg();
-        const String command = msg->getContent();
-        DeserializationError error = deserializeJson(doc, command);
-
+        DeserializationError error = deserializeJson(doc, Message.get());
         if (error)
         {
-            Serial.print(F("deserializeJson() failed: "));
-            Serial.println(error.f_str());
+            Serial.println(error.c_str());
+            return;
         }
-        else
+        if (doc.containsKey("luce"))
         {
-            Serial.println(F("deserializeJson() succeeded:"));
+            digitalWrite(13, doc["luce"] == 1 ? HIGH : LOW);
             int x = doc["luce"];
             int y = doc["tapparelle"];
             Serial.print(x);
             Serial.print(" ");
             Serial.println(y);
         }
-        this->msg = NULL;
     }
-
-    // String s = read();
-    // Serial.println(s);
-
 }

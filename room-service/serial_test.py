@@ -13,8 +13,10 @@ while True:
     #ser.write(str(x).encode('ascii'))
     #ser.write(b'\n')
     data = {}
-    data["operation"] = "sequenze"
-    data["luce"] = x
+    if x % 2 == 0:
+        data["luce"] = 1
+    else:
+        data["luce"] = 0
     data["tapparelle"] = y
     data=json.dumps(data)
     print (data)
