@@ -1,34 +1,35 @@
 #include "deserialize.h"
 
-Deserialize::Deserialize() {
-    
+Deserialize::Deserialize()
+{
+    pinMode(13, OUTPUT);
 }
 
-void Deserialize::init(int period) {
-  MsgService.init();
-  Task::init(period);
+void Deserialize::init(int period)
+{
+    Message.init();
+    Task::init(period);
 }
 
-void Deserialize::tick() {
-  if (MsgService.isMsgAvailable())
-  {
-    Msg *msg = MsgService.receiveMsg();
-    Serial.println(msg->getContent());
-    DeserializationError error = deserializeJson(doc, Serial);
-
-    if (error)
+void Deserialize::tick()
+{
+    Message.read();
+    if (Message.isMsgArrived())
     {
-      Serial.print(F("deserializeJson() failed: "));
-      Serial.println(error.f_str());
+        DeserializationError error = deserializeJson(doc, Message.get());
+        if (error)
+        {
+            Serial.println(error.c_str());
+            return;
+        }
+        if (doc.containsKey("luce"))
+        {
+            digitalWrite(13, doc["luce"] == 1 ? HIGH : LOW);
+            int x = doc["luce"];
+            int y = doc["tapparelle"];
+            Serial.print(x);
+            Serial.print(" ");
+            Serial.println(y);
+        }
     }
-    else
-    {
-      Serial.println(F("deserializeJson() succeeded:"));
-      int x = doc["d"];
-      Serial.println(x);
-    }
-    delete msg;
-  }
-  
 }
-
