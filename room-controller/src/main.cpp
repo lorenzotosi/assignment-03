@@ -7,6 +7,7 @@ SmartRoom *d = new SmartRoom(l, r);
 
 void setup()
 {
+    l->initialize();
     Serial.begin(9600);
     s.init(1000);
     d->init(1000);

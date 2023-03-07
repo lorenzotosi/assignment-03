@@ -42,37 +42,43 @@ void SmartRoom::init(int period)
 
 void SmartRoom::tick()
 {
-     Message.read();
+    Message.read();
+
     if (Message.isMsgArrived())
     {
         updateRoom(Message.get());
     }
 
-    //manca il bluetooth, uguale a sopra
+    // manca il bluetooth, uguale a sopra
 }
 
 void SmartRoom::updateRoom(String message)
 {
-     DeserializationError error = deserializeJson(doc, message);
-        if (error)
-        {
-            Serial.println(error.c_str());
-            return;
-        }
+    DeserializationError error = deserializeJson(doc, message);
+    if (error)
+    {
+        Serial.println(error.c_str());
+        return;
+    }
 
-        if (doc.containsKey("luce"))
-        {
-            /*digitalWrite(13, doc["luce"] == 1 ? HIGH : LOW);
-            int x = doc["luce"];
-            int y = doc["tapparelle"];
-            Serial.print(x);
-            Serial.print(" ");
-            Serial.println(y);*/
-            this->setLightStatus(doc["luce"] == 1 ? true : false);
-        }
+    if (doc.containsKey("luce"))
+    {
+        /*digitalWrite(13, doc["luce"] == 1 ? HIGH : LOW);
+        int x = doc["luce"];
+        int y = doc["tapparelle"];
+        Serial.print(x);
+        Serial.print(" ");
+        Serial.println(y);*/
+        this->setLightStatus(doc["luce"] == 1 ? true : false);
+        int x = doc["luce"];
+        int y = doc["tapparelle"];
+        Serial.print(x);
+        Serial.print(" ");
+        Serial.println(y);
+    }
 
-        if(doc.containsKey("tapparelle"))
-        {
-            this->setRollerBlindsStatus(doc["tapparelle"]);
-        }
+    if (doc.containsKey("tapparelle"))
+    {
+        this->setRollerBlindsStatus(doc["tapparelle"]);
+    }
 }
