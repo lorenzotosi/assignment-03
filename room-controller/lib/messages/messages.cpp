@@ -4,7 +4,6 @@ Messages Message;
 
 Messages::Messages()
 {
-    pinMode(13, OUTPUT);
 }
 
 void Messages::init()

@@ -1,7 +1,15 @@
 #ifndef __BLUETOOTHTASK__
 #define __BLUETOOTHTASK__
 
-#include "includes.h"
+#include <Arduino.h>
+#include "Task.h"
+#include "led.h"
+#include "rBlinds.h"
+#include <ArduinoJson.h>
+#include "messages.h"
+#include "SoftwareSerial.h"
+#include "SmartRoom.h"
+
 
 class BluetoothTask : public Task
 {

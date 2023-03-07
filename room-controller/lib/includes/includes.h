@@ -7,8 +7,6 @@
 #include "Scheduler.h"
 #include "messages.h"
 #include <ArduinoJson.h>
-#include <SoftwareSerial.h>
-#include "deserialize.h"
 #include "SmartRoom.h"
 
 #endif

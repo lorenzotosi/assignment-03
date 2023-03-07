@@ -1,9 +1,10 @@
-
 #include "includes.h"
 
 Scheduler s;
-Deserialize *d = new Deserialize();
-
+//Deserialize *d = new Deserialize();
+led *l = new led(13);
+rBlinds *r = new rBlinds(3);
+SmartRoom *d = new SmartRoom(l, r);
 
 void setup()
 {
@@ -12,44 +13,10 @@ void setup()
     d->init(1000);
     s.addTask(d);
     while (!Serial){}
-    Serial.println("ready to go.");  
+    Serial.println("ready to go.");
 }
 
 void loop()
 {
     s.schedule();
 }
-
-/*
-#include <ArduinoJson.h>
-void setup() {
-  Serial.begin(9600); 
-  while(!Serial) {
-  }
-}
-
-void loop() {
-  String  payload;
-  while ( !Serial.available()  ){}
-  if ( Serial.available() )
-    payload = Serial.readStringUntil( '\n' );
-  StaticJsonDocument<512> doc;
-
-  DeserializationError   error = deserializeJson(doc, payload);
-  if (error) {
-    Serial.println(error.c_str()); 
-    return;
-  }
-  if (doc["luce"] == 1) {
-    int x = doc["luce"];
-    int y = doc["tapparelle"];
-    Serial.print(x);
-    Serial.print(" ");
-    Serial.println(y);
-  }
-  else {
-      Serial.println("{\"Success\":\"False\"}");
-   }
-  delay(1);
-}
-*/
