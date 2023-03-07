@@ -7,7 +7,7 @@
 #include "rBlinds.h"
 #include <ArduinoJson.h>
 #include "messages.h"
-#include "SoftwareSerial.h"
+#include <SoftwareSerial.h>
 #include "SmartRoom.h"
 
 
