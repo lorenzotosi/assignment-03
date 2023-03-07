@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.SeekBar;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 
@@ -23,6 +24,7 @@ import java.nio.charset.StandardCharsets;
 public class LedSwitchActivity extends AppCompatActivity {
 
     private OutputStream bluetoothOutputStream;
+    private InputStream bluetoothInputStream;
     private Button remoteButton;
     private boolean ledState;
     private BluetoothClientConnectionThread connectionThread;
@@ -47,7 +49,7 @@ public class LedSwitchActivity extends AppCompatActivity {
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                sendSeekBarValue(progress);
+
             }
 
             @Override
@@ -57,7 +59,7 @@ public class LedSwitchActivity extends AppCompatActivity {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-
+                sendSeekBarValue(seekBar.getProgress());
             }
         });
         seekBar.setEnabled(false);
@@ -66,10 +68,11 @@ public class LedSwitchActivity extends AppCompatActivity {
     private void sendMessage() {
         new Thread(() -> {
             try {
-                String message = ledState ? "off\n" : "on\n";
+                String message = "{ledState: " + (ledState ? 0 : 1) + "}\n";
+                System.out.println(message);
                 bluetoothOutputStream.write(message.getBytes(StandardCharsets.UTF_8));
                 ledState = !ledState;
-                runOnUiThread(() -> remoteButton.setBackgroundColor(ledState? Color.GREEN : Color.RED));
+                runOnUiThread(() -> remoteButton.setBackgroundColor(ledState ? Color.GREEN : Color.RED));
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -83,6 +86,23 @@ public class LedSwitchActivity extends AppCompatActivity {
                 bluetoothOutputStream.write(message.getBytes(StandardCharsets.UTF_8));
             } catch (IOException e) {
                 e.printStackTrace();
+            }
+        }).start();
+    }
+
+    private void getMessage() {
+        new Thread(() -> {
+            while(true) {
+                try {
+                    StringBuilder message = new StringBuilder();
+                    int i;
+                    while((i = bluetoothInputStream.read()) != '\n') {
+                        message.append((char)i);
+                    }
+                    System.out.println(message);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }).start();
     }
@@ -101,7 +121,9 @@ public class LedSwitchActivity extends AppCompatActivity {
     private void manageConnectedSocket(BluetoothSocket socket) {
         try {
             bluetoothOutputStream = socket.getOutputStream();
+            bluetoothInputStream = socket.getInputStream();
             Log.i(C.TAG, "Connection successful!");
+            this.getMessage();
         } catch (IOException e) {
             Log.e(C.TAG, "Error occurred when creating output stream", e);
         }
