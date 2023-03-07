@@ -1,7 +1,8 @@
 #include "messages.h"
+#include "Variables.h"
 
 Messages Message;
-MessagesBT MessageBT;
+MessagesBT MessageBT(btrx, bttx);
 
 Messages::Messages()
 {

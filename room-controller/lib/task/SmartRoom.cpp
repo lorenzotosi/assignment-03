@@ -36,6 +36,7 @@ void SmartRoom::setRollerBlindsStatus(int percentage)
 void SmartRoom::init(int period)
 {
     Message.init();
+    MessageBT.init();
     Task::init(period);
     this->rollerBlinds->setAngle(map(100, 0, 100, 0, 180));
 }
@@ -54,8 +55,6 @@ void SmartRoom::tick()
     {
         updateRoom(MessageBT.get());
     }
-
-    // manca il bluetooth, uguale a sopra
 }
 
 void SmartRoom::updateRoom(String message)
