@@ -20,13 +20,11 @@ bool Messages::isMsgArrived()
 void Messages::read()
 {
     payload = "";
-    while (!Serial.available())
+    while (Serial.available())
     {
-    }
-    if (Serial.available()){
         payload = Serial.readStringUntil('\n');
         msgArrived = true;
-   }
+    }
 }
 
 void Messages::send()
