@@ -9,5 +9,6 @@
 #include <ArduinoJson.h>
 #include <SoftwareSerial.h>
 #include "deserialize.h"
+#include "SmartRoom.h"
 
 #endif
