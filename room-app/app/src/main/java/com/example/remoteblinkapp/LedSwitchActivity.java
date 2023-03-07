@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.widget.Button;
+import android.widget.SeekBar;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -25,6 +26,8 @@ public class LedSwitchActivity extends AppCompatActivity {
     private Button remoteButton;
     private boolean ledState;
     private BluetoothClientConnectionThread connectionThread;
+
+    private SeekBar seekBar;
 
 
     @Override
@@ -40,6 +43,24 @@ public class LedSwitchActivity extends AppCompatActivity {
         remoteButton.setBackgroundColor(Color.LTGRAY);
         remoteButton.setEnabled(false);
         remoteButton.setOnClickListener((v) -> sendMessage());
+        seekBar = findViewById(R.id.seekBar);
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                sendSeekBarValue(progress);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+        seekBar.setEnabled(false);
     }
 
     private void sendMessage() {
@@ -49,6 +70,17 @@ public class LedSwitchActivity extends AppCompatActivity {
                 bluetoothOutputStream.write(message.getBytes(StandardCharsets.UTF_8));
                 ledState = !ledState;
                 runOnUiThread(() -> remoteButton.setBackgroundColor(ledState? Color.GREEN : Color.RED));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }).start();
+    }
+
+    private void sendSeekBarValue(int progress) {
+        new Thread(() -> {
+            try {
+                String message = progress + "\n";
+                bluetoothOutputStream.write(message.getBytes(StandardCharsets.UTF_8));
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -76,6 +108,7 @@ public class LedSwitchActivity extends AppCompatActivity {
         runOnUiThread(() -> {
             remoteButton.setEnabled(true);
             remoteButton.setBackgroundColor(Color.RED);
+            seekBar.setEnabled(true);
         });
     }
 
