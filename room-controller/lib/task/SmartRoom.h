@@ -7,6 +7,7 @@
 #include "rBlinds.h"
 #include <ArduinoJson.h>
 #include "messages.h"
+#include "updater.h"
 
 class SmartRoom : public Task
 {
@@ -23,6 +24,7 @@ private:
     led *light;
     rBlinds *rollerBlinds;
     DynamicJsonDocument doc = DynamicJsonDocument(256);
+    Updater *update = new Updater();
 };
 
 #endif

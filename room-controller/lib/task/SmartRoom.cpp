@@ -8,7 +8,7 @@ SmartRoom::SmartRoom(led *light, rBlinds *rollerBlinds)
 
 bool SmartRoom::isLightOn()
 {
-    return this->light->isOn();
+    return this->light->isOn() ? 1 : 0;
 }
 
 void SmartRoom::setLightStatus(bool status)
@@ -55,6 +55,9 @@ void SmartRoom::tick()
     {
         updateRoom(MessageBT.get());
     }
+
+    update->createJson(this->isLightOn(), this->getRollerBlindsStatus());
+    update->sendJson();
 }
 
 void SmartRoom::updateRoom(String message)
