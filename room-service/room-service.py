@@ -2,6 +2,8 @@ import keyboard
 import paho.mqtt.client as paho
 import requests as req
 from datetime import datetime
+import serial
+import json
 
 
 def on_key_press(key):
@@ -26,6 +28,22 @@ def on_connect(client, userdata, flags, rc):
 def callback(message):
     print("message received ", str(message.payload.decode("utf-8")))
 
+def sendToArduino(lightS, windowS):
+    lStatus;
+    if (lightS):
+        lStatus = 1;
+    else:
+        lStatus = 0;
+    ser.open()
+    data = {}
+    data["luce"] = lStatus
+    data["tapparelle"] = windowS
+    data=json.dumps(data)
+    ser.write(data.encode('ascii'))
+    ser.write(b'\n')
+    ser.flush()
+    ser.close()
+
 
 def on_message(client, userdata, msg):
     global light_status, window_status, first_entry, url_post
@@ -46,6 +64,7 @@ def on_message(client, userdata, msg):
             }
             req.post(url_post, json=request)
             # TODO: send request to serial
+            
         if light_status == "Off":
             light_status = "On"
             component_type = "lights"
@@ -58,6 +77,7 @@ def on_message(client, userdata, msg):
             }
             req.post(url_post, json=request)
             # TODO: send request to serial
+            
     else:
         if light_status == "On":
             light_status = "Off"
@@ -102,6 +122,9 @@ keyboard.on_press(on_key_press)
 stop = False
 # client.loop_start()
 
+ser = serial.Serial("/dev/cu.usbmodem14201", 9600, timeout=1)
+ser.close()
+
 print("Starting loop")
 
 while stop == False:
@@ -110,8 +133,14 @@ while stop == False:
     if (data["lights"] != light_status):
         light_status = data["lights"]
         # TODO: send request to serial
+
+        sendToArduino(light_status, window_status)
+
     if (data["window"] != window_status):
         window_status = data["window"]
         # TODO: send request to serial
+
+        sendToArduino(light_status, window_status)
+        
     print(light_status)
     print(str(window_status))
