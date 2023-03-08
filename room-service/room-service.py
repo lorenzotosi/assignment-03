@@ -30,7 +30,7 @@ def callback(message):
 
 def sendToArduino(lightS, windowS):
     lStatus;
-    if (lightS):
+    if (lightS == "On"):
         lStatus = 1;
     else:
         lStatus = 0;
@@ -64,7 +64,8 @@ def on_message(client, userdata, msg):
             }
             req.post(url_post, json=request)
             # TODO: send request to serial
-            
+            sendToArduino(light_status, window_status)
+
         if light_status == "Off":
             light_status = "On"
             component_type = "lights"
@@ -77,7 +78,7 @@ def on_message(client, userdata, msg):
             }
             req.post(url_post, json=request)
             # TODO: send request to serial
-            
+            sendToArduino(light_status, window_status)
     else:
         if light_status == "On":
             light_status = "Off"
@@ -91,6 +92,7 @@ def on_message(client, userdata, msg):
             }
             req.post(url_post, json=request)
             # TODO: send request to serial
+            sendToArduino(light_status, window_status)
         if datetime.now().hour >= 19 and datetime.now().hour <= 8:
             first_entry = True
             if window_status != 0:
@@ -105,6 +107,7 @@ def on_message(client, userdata, msg):
                 }
                 req.post(url_post, json=request)
                 # TODO: send request to serial
+                sendToArduino(light_status, window_status)
 
 
 light_status = "Off"
@@ -141,6 +144,6 @@ while stop == False:
         # TODO: send request to serial
 
         sendToArduino(light_status, window_status)
-        
+
     print(light_status)
     print(str(window_status))
