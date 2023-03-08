@@ -1,3 +1,4 @@
+import random
 import serial
 import time
 import json
@@ -6,7 +7,7 @@ ser = serial.Serial("/dev/cu.usbmodem14201", 9600, timeout=1)
 ser.close()
 
 x = 1;
-y = 100;
+y = 50;
 
 while True:
     ser.open()
@@ -15,8 +16,10 @@ while True:
     data = {}
     if x % 2 == 0:
         data["luce"] = 1
+        y = y - random.randint(1, 10)
     else:
         data["luce"] = 0
+        y = y + random.randint(1, 10)
     data["tapparelle"] = y
     data=json.dumps(data)
     print (data)
@@ -25,5 +28,5 @@ while True:
     ser.flush()
     ser.close()
     x = x + 1
-    y = y + 1
+
     time.sleep(1)
