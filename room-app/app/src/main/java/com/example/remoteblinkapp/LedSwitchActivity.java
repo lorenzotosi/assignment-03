@@ -15,6 +15,9 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.SeekBar;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -99,9 +102,20 @@ public class LedSwitchActivity extends AppCompatActivity {
                     while((i = bluetoothInputStream.read()) != '\n') {
                         message.append((char)i);
                     }
-                    System.out.println(message);
+                    if (!message.toString().isEmpty()) {
+                        JSONObject jsonObject = new JSONObject(message.toString());
+                        if (jsonObject.has("ledState")) {
+                            ledState = jsonObject.getBoolean("ledState");
+                            runOnUiThread(() -> remoteButton.setBackgroundColor(ledState ? Color.GREEN : Color.RED));
+                        } else if (jsonObject.has("seekBarValue")) {
+                            int seekBarValue = jsonObject.getInt("seekBarValue");
+                            runOnUiThread(() -> seekBar.setProgress(seekBarValue));
+                        }
+                    }
                 } catch (IOException e) {
                     e.printStackTrace();
+                } catch (JSONException e) {
+                    throw new RuntimeException(e);
                 }
             }
         }).start();
