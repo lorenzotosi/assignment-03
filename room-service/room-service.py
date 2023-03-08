@@ -137,13 +137,11 @@ while stop == False:
         light_status = data["lights"]
         # TODO: send request to serial
 
-        sendToArduino(light_status, window_status)
-
     if (data["window"] != window_status):
         window_status = data["window"]
         # TODO: send request to serial
 
-        sendToArduino(light_status, window_status)
+    sendToArduino(light_status, window_status)
 
     print(light_status)
     print(str(window_status))
