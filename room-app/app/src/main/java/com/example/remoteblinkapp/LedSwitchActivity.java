@@ -10,7 +10,6 @@ import android.bluetooth.BluetoothSocket;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.SeekBar;
@@ -34,12 +33,15 @@ public class LedSwitchActivity extends AppCompatActivity {
 
     private SeekBar seekBar;
 
+    private boolean stop;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_led_switch);
         ledState = false;
+        stop = false;
         initUI();
     }
 
@@ -47,7 +49,7 @@ public class LedSwitchActivity extends AppCompatActivity {
         remoteButton = findViewById(R.id.remotebutton);
         remoteButton.setBackgroundColor(Color.LTGRAY);
         remoteButton.setEnabled(false);
-        remoteButton.setOnClickListener((v) -> sendMessage());
+        remoteButton.setOnClickListener((v) -> sendLightStatus());
         seekBar = findViewById(R.id.seekBar);
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -68,12 +70,12 @@ public class LedSwitchActivity extends AppCompatActivity {
         seekBar.setEnabled(false);
     }
 
-    private void sendMessage() {
+    private void sendLightStatus() {
         new Thread(() -> {
             try {
-                String message = "{ledState: " + (ledState ? 0 : 1) + "}\n";
+                String message = "{light: " + (ledState ? 0 : 1) + "}\n";
                 System.out.println(message);
-                bluetoothOutputStream.write(message.getBytes(StandardCharsets.UTF_8));
+                bluetoothOutputStream.write(message.getBytes(StandardCharsets.US_ASCII));
                 ledState = !ledState;
                 runOnUiThread(() -> remoteButton.setBackgroundColor(ledState ? Color.GREEN : Color.RED));
             } catch (IOException e) {
@@ -85,8 +87,9 @@ public class LedSwitchActivity extends AppCompatActivity {
     private void sendSeekBarValue(int progress) {
         new Thread(() -> {
             try {
-                String message = progress + "\n";
-                bluetoothOutputStream.write(message.getBytes(StandardCharsets.UTF_8));
+                String message = "{window: " + progress + "}\n";
+                System.out.println(message);
+                bluetoothOutputStream.write(message.getBytes(StandardCharsets.US_ASCII));
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -95,26 +98,30 @@ public class LedSwitchActivity extends AppCompatActivity {
 
     private void getMessage() {
         new Thread(() -> {
-            while(true) {
+            while(!this.stop) {
                 try {
                     StringBuilder message = new StringBuilder();
                     int i;
-                    while((i = bluetoothInputStream.read()) != '\n') {
+                    while((i = bluetoothInputStream.read()) != '\n' && i != -1 && i != 0) {
                         message.append((char)i);
                     }
+                    System.out.println(message);
                     if (!message.toString().isEmpty()) {
                         JSONObject jsonObject = new JSONObject(message.toString());
-                        if (jsonObject.has("ledState")) {
-                            ledState = jsonObject.getBoolean("ledState");
-                            runOnUiThread(() -> remoteButton.setBackgroundColor(ledState ? Color.GREEN : Color.RED));
-                        } else if (jsonObject.has("seekBarValue")) {
-                            int seekBarValue = jsonObject.getInt("seekBarValue");
+                        if (jsonObject.has("light")) {
+                            int ledState = jsonObject.getInt("light");
+                            runOnUiThread(() -> remoteButton.setBackgroundColor(ledState == 1 ? Color.GREEN : Color.RED));
+                        }
+                        if (jsonObject.has("window")) {
+                            int seekBarValue = jsonObject.getInt("window");
                             runOnUiThread(() -> seekBar.setProgress(seekBarValue));
                         }
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
-                } catch (JSONException e) {
+                } /*catch (JSONException e) {
+                    throw new RuntimeException(e);
+                }*/ catch (JSONException e) {
                     throw new RuntimeException(e);
                 }
             }
@@ -151,6 +158,7 @@ public class LedSwitchActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
+        stop = true;
         connectionThread.cancel();
     }
 
