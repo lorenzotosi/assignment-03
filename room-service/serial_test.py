@@ -6,8 +6,8 @@ import json
 ser = serial.Serial("/dev/cu.usbmodem14201", 9600, timeout=1)
 ser.close()
 
-x = 1;
-y = 50;
+x = 1
+y = 50
 
 while True:
     ser.open()

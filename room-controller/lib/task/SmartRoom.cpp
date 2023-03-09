@@ -37,27 +37,31 @@ void SmartRoom::init(int period)
 {
     Message.init();
     MessageBT.init();
+
     Task::init(period);
     this->rollerBlinds->setAngle(map(100, 0, 100, 0, 180));
 }
 
 void SmartRoom::tick()
 {
+
+    /*
     Message.read();
 
     if (Message.isMsgArrived())
     {
         updateRoom(Message.get());
     }
-
+    */
     MessageBT.read();
     if (MessageBT.isMsgArrived())
     {
         updateRoom(MessageBT.get());
+        MessageBT.sendMsg("ciao");
     }
-
-    update->createJson(this->isLightOn(), this->getRollerBlindsStatus());
-    update->sendJson();
+    
+   // update->createJson(this->isLightOn(), this->getRollerBlindsStatus());
+   // update->sendJson();
 }
 
 void SmartRoom::updateRoom(String message)
@@ -69,7 +73,7 @@ void SmartRoom::updateRoom(String message)
         return;
     }
 
-    if (doc.containsKey("luce"))
+    if (doc.containsKey("light"))
     {
         /*digitalWrite(13, doc["luce"] == 1 ? HIGH : LOW);
         int x = doc["luce"];
@@ -77,16 +81,21 @@ void SmartRoom::updateRoom(String message)
         Serial.print(x);
         Serial.print(" ");
         Serial.println(y);*/
-        this->setLightStatus(doc["luce"] == 1 ? true : false);
-        int x = doc["luce"];
-        int y = doc["tapparelle"];
-        Serial.print(x);
-        Serial.print(" ");
-        Serial.println(y);
+        this->setLightStatus(doc["light"] == 1 ? true : false);
+        int x = doc["light"];
+        //int y = doc["window"];
+        Serial.println(x);
+        //Serial.print(" ");
+        //Serial.println(y);
     }
 
-    if (doc.containsKey("tapparelle"))
+    if (doc.containsKey("window"))
     {
-        this->setRollerBlindsStatus(doc["tapparelle"]);
+        int a = doc["window"];
+        Serial.println(a);
+        this->setRollerBlindsStatus(doc["window"]);
     }
+
+    //MessageBT.send(update->createJson(this->isLightOn(), this->getRollerBlindsStatus()));
+    //update->sendJson();
 }
