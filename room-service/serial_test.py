@@ -15,12 +15,12 @@ while True:
     #ser.write(b'\n')
     data = {}
     if x % 2 == 0:
-        data["luce"] = 1
+        data["light"] = 1
         y = y - random.randint(1, 10)
     else:
-        data["luce"] = 0
+        data["light"] = 0
         y = y + random.randint(1, 10)
-    data["tapparelle"] = y
+    data["window"] = y
     data=json.dumps(data)
     print (data)
     ser.write(data.encode('ascii'))
@@ -29,4 +29,6 @@ while True:
     ser.close()
     x = x + 1
 
-    time.sleep(1)
+    time.sleep(10)
+
+    
