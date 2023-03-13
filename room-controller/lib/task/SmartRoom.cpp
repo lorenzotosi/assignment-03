@@ -57,7 +57,7 @@ void SmartRoom::tick()
     if (MessageBT.isMsgArrived())
     {
         updateRoom(MessageBT.get());
-        MessageBT.sendMsg("ciao");
+        // MessageBT.sendMsg("ciao");
     }
     
    // update->createJson(this->isLightOn(), this->getRollerBlindsStatus());
