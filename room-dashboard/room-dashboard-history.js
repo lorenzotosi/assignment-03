@@ -97,6 +97,10 @@ function drawWindowLog(data) {
             textStyle: {
                 color: legendColor,
             },
+            viewWindow: {
+                min: new Date().setHours(0, 0),
+                max: new Date().setHours(23, 59),
+            },
         },
         vAxis: {
             textStyle: {
@@ -153,6 +157,8 @@ function drawLightsLog(data) {
             gridlines: {
                 color: "transparent",
             },
+            minValue: new Date().setHours(0, 0, 0),
+            maxValue: new Date().setHours(23, 59, 59),
         },
         timeline: {
             rowLabelStyle: {
