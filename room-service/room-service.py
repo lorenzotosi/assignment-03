@@ -37,8 +37,8 @@ def sendToArduino(lightS, windowS):
         lStatus = 0;
     ser.open()
     data = {}
-    data["luce"] = lStatus
-    data["tapparelle"] = windowS
+    data["light"] = lStatus
+    data["window"] = windowS
     data=json.dumps(data)
     ser.write(data.encode('ascii'))
     ser.write(b'\n')
