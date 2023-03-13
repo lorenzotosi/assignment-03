@@ -125,7 +125,8 @@ keyboard.on_press(on_key_press)
 stop = False
 # client.loop_start()
 
-ser = serial.Serial("/dev/cu.usbmodem14201", 9600, timeout=1)
+# ser = serial.Serial("/dev/cu.usbmodem14201", 9600, timeout=1)
+ser = serial.Serial("COM3", 9600, timeout=1)
 ser.close()
 
 print("Starting loop")

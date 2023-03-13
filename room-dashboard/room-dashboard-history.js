@@ -18,14 +18,6 @@ window.onresize = function () {
     google.charts.setOnLoadCallback(drawChart);
 };
 
-
-// TODO chiamare questa funzione
-function test() {
-    axios.get("room-dashboard-history.php").then((response) => {
-        console.log(response.data);
-    });
-}
-
 function drawChart() {
     axios.get("logs.json").then((response) => {
         let windowData = response.data["data"]["window-log"];
@@ -35,8 +27,9 @@ function drawChart() {
         drawLightsUsage(lightsData);
         document.querySelectorAll("svg").forEach((element) => {
             let divWidth = element.parentElement.parentElement.parentElement.parentElement.parentElement.offsetWidth * 0.002;
-            element.setAttribute("style", `transform: scale(${divWidth})`);
-            element.style.maxHeight = "200px !important";
+            if (divWidth < 0.96) {
+                element.setAttribute("style", `transform: scale(${divWidth})`);
+            }
         });
     });
 }
@@ -119,7 +112,6 @@ function drawLightsLog(data) {
     dataTable.addColumn({ type: "string", role: "tooltip" });
     dataTable.addColumn({ type: "datetime", id: "Start" });
     dataTable.addColumn({ type: "datetime", id: "End" });
-    let dynamicTicks = [];
     data.forEach(element => {
         const tooltip = `
             <div>
@@ -133,14 +125,12 @@ function drawLightsLog(data) {
         `;
         dataTable.addRow([
             element.status,
-            null,
+            '',
             tooltip,
             convertTime(element.start),
             convertTime(element.end),
         ]);
-        dynamicTicks.push(convertTime(element.start).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
     });
-    dynamicTicks.push(convertTime(data[data.length - 1].end).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
     const options = {
         backgroundColor: chartBackgroundColor,
         colors: ["green", "red"],
@@ -149,7 +139,6 @@ function drawLightsLog(data) {
             gridlines: {
                 color: "transparent",
             },
-            ticks: dynamicTicks,
         },
         timeline: {
             rowLabelStyle: {

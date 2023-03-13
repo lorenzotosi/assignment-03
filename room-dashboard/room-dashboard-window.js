@@ -9,25 +9,25 @@ window.onload = function () {
     updateClock();
     const slider = document.getElementById("slider");
     const lightSwitch = document.querySelector(".light");
-    let isLightsOn = setupSystem(slider);
-    lightSwitch.addEventListener("click", function () {
-        isLightsOn = !isLightsOn;
-        checkLights(isLightsOn);
+    setupSystem(slider).then((response) => {
+        let isLightsOn = response;
+        lightSwitch.addEventListener("click", function () {
+            isLightsOn = !isLightsOn;
+            checkLights(isLightsOn);
+        });
     });
-    lightSwitch.click();
     handleSlider(slider);
     changeBackground(isNight);
 };
 
 function setupSystem(slider) {
-    return () =>
-        axios.get("logs.json").then((response) => {
-            let windowData = response.data["data"]["window-log"];
-            let lightsData = response.data["data"]["lights-log"];
-            slider.defaultValue = windowData[windowData.length - 1].status;
-            slideRollerBlinds(slider.defaultValue);
-            return lightsData[lightsData.length - 1].status == "On" ? true : false;
-        });
+    return axios.get("logs.json").then((response) => {
+        let windowData = response.data["data"]["window-log"];
+        let lightsData = response.data["data"]["lights-log"];
+        slider.defaultValue = windowData[windowData.length - 1].status;
+        slideRollerBlinds(slider.defaultValue);
+        return lightsData[lightsData.length - 1].status == "On" ? true : false;
+    });
 }
 
 function handleSlider(slider) {
@@ -65,6 +65,7 @@ function updateWindow(value) {
         "content": {
             "status": parseInt(value),
             "start": new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' }),
+            "end": new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' }),
         },
         "type": "window",
     };
@@ -80,6 +81,7 @@ function checkLights(isLightsOn) {
         "content": {
             "status": isLightsOn ? "On" : "Off",
             "start": new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' }),
+            "end": new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' }),
         },
         "type": "lights",
     };
