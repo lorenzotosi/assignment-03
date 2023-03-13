@@ -35,8 +35,9 @@ function drawChart() {
         drawLightsUsage(lightsData);
         document.querySelectorAll("svg").forEach((element) => {
             let divWidth = element.parentElement.parentElement.parentElement.parentElement.parentElement.offsetWidth * 0.002;
-            element.setAttribute("style", `transform: scale(${divWidth})`);
-            element.style.maxHeight = "200px !important";
+            if (divWidth < 0.96) {
+                element.setAttribute("style", `transform: scale(${divWidth})`);
+            }
         });
     });
 }
