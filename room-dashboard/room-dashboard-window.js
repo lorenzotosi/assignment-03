@@ -7,10 +7,12 @@ document.documentElement.setAttribute("data-theme", isNight ? "dark" : "light")
 window.onload = function () {
     document.querySelector("body").style.transitionDuration = "1s"
     updateClock()
+    setInterval(updateClock, 1000)
     const slider = document.getElementById("slider")
     const lightSwitch = document.querySelector(".light")
     setupSystem(slider).then((response) => {
         let isLightsOn = response
+        checkLights(isLightsOn)
         lightSwitch.addEventListener("click", function () {
             isLightsOn = !isLightsOn
             checkLights(isLightsOn)
@@ -144,4 +146,4 @@ function updateClock() {
     })
     clock.innerHTML = currentTime
 }
-setInterval(updateClock, 1000)
+
