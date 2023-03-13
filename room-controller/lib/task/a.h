@@ -56,12 +56,12 @@ public:
                 digitalWrite(13, doc["light"] == 1 ? HIGH : LOW);
             }
             Serial.println(command);
-            String response = "{\"light\":";
+           /*String response = "{\"light\":";
             response += digitalRead(LED_PIN) == HIGH ? "1" : "0";
             response +=  ",\"window\":";
             response += doc["window"].as<int>();
-            response += "}";
-            MsgServiceBT.sendMsg(response);
+            response += "}";*/
+            //MsgServiceBT.sendMsg(response);
             delete msg;
         }
         // in this example messages incoming from serial are flushed
