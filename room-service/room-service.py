@@ -29,7 +29,7 @@ def callback(message):
     print("message received ", str(message.payload.decode("utf-8")))
 
 def sendToArduino(lightS, windowS):
-    lStatus;
+    lStatus = 0;
     if (lightS == "On"):
         lStatus = 1;
     else:
