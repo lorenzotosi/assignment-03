@@ -4,16 +4,17 @@ import requests as req
 from datetime import datetime
 import serial
 import json
+import time
 
 
-def on_key_press(key):
+""" def on_key_press(key):
     global stop
     if key.name == "s":
         stop = True
         client.loop_stop()
         client.disconnect()
         print("Stopping loop")
-        exit()
+        exit() """
 
 
 def on_subscribe(client, userdata, mid, granted_qos):
@@ -29,15 +30,17 @@ def callback(message):
     print("message received ", str(message.payload.decode("utf-8")))
 
 def sendToArduino(lightS, windowS):
-    lStatus = 0;
+
+    lStatus = 0
+
     if (lightS == "On"):
-        lStatus = 1;
+        lStatus = 1
     else:
-        lStatus = 0;
+        lStatus = 0
     ser.open()
     data = {}
-    data["luce"] = lStatus
-    data["tapparelle"] = windowS
+    data["light"] = lStatus
+    data["window"] = windowS
     data=json.dumps(data)
     ser.write(data.encode('ascii'))
     ser.write(b'\n')
@@ -115,15 +118,15 @@ window_status = 0
 first_entry = True
 client = paho.Client()
 client.on_connect = on_connect
-# client.connect("broker.hivemq.com", 1883)
+#client.connect("broker.hivemq.com", 1883)
 client.on_subscribe = on_subscribe
 client.on_message = on_message
 url_post = "http://localhost/assignment-03/room-dashboard/room-dashboard-history.php"
 url_get = "http://localhost/assignment-03/room-dashboard/room-dashboard-window.php"
 
-keyboard.on_press(on_key_press)
+#keyboard.on_press(on_key_press)
 stop = False
-# client.loop_start()
+#client.loop_start()
 
 # ser = serial.Serial("/dev/cu.usbmodem14201", 9600, timeout=1)
 ser = serial.Serial("COM3", 9600, timeout=1)
@@ -146,3 +149,4 @@ while stop == False:
 
     print(light_status)
     print(str(window_status))
+    time.sleep(2)

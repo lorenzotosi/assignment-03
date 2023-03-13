@@ -3,6 +3,7 @@ import serial
 import time
 import json
 
+
 # ser = serial.Serial("/dev/cu.usbmodem14201", 9600, timeout=1)
 ser = serial.Serial("COM3", 9600, timeout=1)
 ser.close()
@@ -11,7 +12,7 @@ x = 1
 y = 50
 
 while True:
-    ser.open()
+    #ser.open()
     #ser.write(str(x).encode('ascii'))
     #ser.write(b'\n')
     data = {}
@@ -26,10 +27,10 @@ while True:
     print (data)
     ser.write(data.encode('ascii'))
     ser.write(b'\n')
-    ser.flush()
-    ser.close()
+    #ser.flush()
+    #ser.close()
     x = x + 1
 
-    time.sleep(10)
+    time.sleep(2)
 
     

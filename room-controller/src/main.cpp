@@ -1,23 +1,30 @@
-#include "includes.h"
+#include "MsgService.h"
+#include <Wire.h>
+#include "ArduinoJson.h"
+#include "Scheduler.h"
+#include "a.h"
 
+#define LED_PIN 13
 
-Scheduler s;
-led *l = new led(13);
-rBlinds *r = new rBlinds(3);
-SmartRoom *d = new SmartRoom(l, r);
+DynamicJsonDocument doc = DynamicJsonDocument(256);
 
-void setup()
-{
-    l->initialize();
-    Serial.begin(9600);
-    s.init(1000);
-    d->init(1000);
-    s.addTask(d);
-    while (!Serial){}
-    Serial.println("ready to go.");
+Scheduler scheduler;
+A a;
+
+void setup() {
+  MsgServiceBT.init();
+  MsgService.init();
+  pinMode(LED_PIN,OUTPUT);
+  scheduler.init();
+  scheduler.addTask(&a);
+  
+
+  Serial.begin(9600);
+  while (!Serial){}
+  Serial.println("ready to go.");  
+  a.init(1000); 
 }
 
-void loop()
-{
-    s.schedule();
+void loop() {
+  scheduler.schedule();
 }
