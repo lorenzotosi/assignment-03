@@ -9,15 +9,15 @@ if (isset($data)) {
     } else {
         adjustArray($jsonContent["data"]["lights-log"], $data["content"]);
     }
-    file_put_contents("temp.json", json_encode($jsonContent, JSON_PRETTY_PRINT));
+    file_put_contents("logs.json", json_encode($jsonContent, JSON_PRETTY_PRINT));
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
     header("Content-Type: application/json; charset=UTF-8");
-    echo $data;
+    echo json_encode($data);
 }
 
-function adjustArray($dataArray, $newElement)
+function adjustArray(&$dataArray, &$newElement)
 {
     $dataArray[count($dataArray) - 1]["end"] = $newElement["start"];
 
@@ -41,7 +41,7 @@ function adjustArray($dataArray, $newElement)
         array_shift($dataArray);
     }
 
-    if ($dataArray[count($dataArray) - 1]["status"] == $newElement["status"]) {
+    if ($dataArray[count($dataArray) - 1]["status"] != $newElement["status"]) {
         array_push($dataArray, $newElement);
     } else {
         $dataArray[count($dataArray) - 1]["end"] = $newElement["end"];
