@@ -14,6 +14,10 @@ window.onload = function () {
     })
     document.querySelector("body").style.transitionDuration = "1s"
     changeBackground(isNight)
+    setTimeout(function () {
+        document.querySelector(".preload").style.opacity = "0"
+        document.querySelector(".preload").style.zIndex = "-1"
+    }, 500)
 }
 
 window.onresize = function () {

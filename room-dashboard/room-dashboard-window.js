@@ -20,6 +20,10 @@ window.onload = function () {
     })
     handleSlider(slider)
     changeBackground(isNight)
+    setTimeout(function () {
+        document.querySelector(".preload").style.opacity = "0"
+        document.querySelector(".preload").style.zIndex = "-1"
+    }, 500)
 }
 
 function setupSystem(slider) {
@@ -146,4 +150,3 @@ function updateClock() {
     })
     clock.innerHTML = currentTime
 }
-

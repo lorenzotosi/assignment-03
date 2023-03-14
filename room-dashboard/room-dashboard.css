@@ -10,6 +10,21 @@
     --element-bg-color: #3a3a3a79;
 }
 
+.preload {
+    width: 100%;
+    height: 100%;
+    background-color: var(--bg-color);
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 1;
+    transition: opacity 1s;
+}
+
 body {
     color: var(--font-color);
     background: var(--bg-color);
