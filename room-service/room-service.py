@@ -1,20 +1,7 @@
-import keyboard
+import keyboard, serial, json, time
 import paho.mqtt.client as paho
 import requests as req
 from datetime import datetime
-import serial
-import json
-import time
-
-
-""" def on_key_press(key):
-    global stop
-    if key.name == "s":
-        stop = True
-        client.loop_stop()
-        client.disconnect()
-        print("Stopping loop")
-        exit() """
 
 
 def on_subscribe(client, userdata, mid, granted_qos):
@@ -29,18 +16,17 @@ def on_connect(client, userdata, flags, rc):
 def callback(message):
     print("message received ", str(message.payload.decode("utf-8")))
 
-def sendToArduino(lightS, windowS):
 
-    lStatus = 0
-
-    if (lightS == "On"):
-        lStatus = 1
+def send_to_arduino(light_message, window_message):
+    light_status_int = 0
+    if (light_message == "On"):
+        light_status_int = 1
     else:
-        lStatus = 0
+        light_status_int = 0
     ser.open()
     data = {}
-    data["light"] = lStatus
-    data["window"] = windowS
+    data["light"] = light_status_int
+    data["window"] = window_message
     data=json.dumps(data)
     ser.write(data.encode('ascii'))
     ser.write(b'\n')
@@ -66,8 +52,7 @@ def on_message(client, userdata, msg):
                 "type": component_type,
             }
             req.post(url_post, json=request)
-            # TODO: send request to serial
-            sendToArduino(light_status, window_status)
+            send_to_arduino(light_status, window_status)
 
         if light_status == "Off":
             light_status = "On"
@@ -80,8 +65,7 @@ def on_message(client, userdata, msg):
                 "type": component_type,
             }
             req.post(url_post, json=request)
-            # TODO: send request to serial
-            sendToArduino(light_status, window_status)
+            send_to_arduino(light_status, window_status)
     else:
         if light_status == "On":
             light_status = "Off"
@@ -94,8 +78,7 @@ def on_message(client, userdata, msg):
                 "type": component_type,
             }
             req.post(url_post, json=request)
-            # TODO: send request to serial
-            sendToArduino(light_status, window_status)
+            send_to_arduino(light_status, window_status)
         if datetime.now().hour >= 19 and datetime.now().hour <= 8:
             first_entry = True
             if window_status != 0:
@@ -109,8 +92,7 @@ def on_message(client, userdata, msg):
                     "type": component_type,
                 }
                 req.post(url_post, json=request)
-                # TODO: send request to serial
-                sendToArduino(light_status, window_status)
+                send_to_arduino(light_status, window_status)
 
 
 light_status = "Off"
@@ -124,7 +106,6 @@ client.on_message = on_message
 url_post = "http://localhost/assignment-03/room-dashboard/room-dashboard-history.php"
 url_get = "http://localhost/assignment-03/room-dashboard/room-dashboard-window.php"
 
-#keyboard.on_press(on_key_press)
 stop = False
 #client.loop_start()
 
@@ -139,13 +120,9 @@ while stop == False:
     data = response.json()
     if (data["lights"] != light_status):
         light_status = data["lights"]
-        # TODO: send request to serial
-
     if (data["window"] != window_status):
         window_status = data["window"]
-        # TODO: send request to serial
-
-    sendToArduino(light_status, window_status)
+    send_to_arduino(light_status, window_status)
 
     print(light_status)
     print(str(window_status))
