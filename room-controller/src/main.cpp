@@ -3,15 +3,21 @@
 #include "ArduinoJson.h"
 #include "Scheduler.h"
 #include "a.h"
+#include "SmartRoom.h"
 
 #define LED_PIN 13
 
-DynamicJsonDocument doc = DynamicJsonDocument(256);
-
 Scheduler scheduler;
 A a;
+SmartRoom* s;
+Led* l;
+rBlinds* r;
 
 void setup() {
+  l = new Led(LED_PIN);
+  r = new rBlinds(8);
+  s = new SmartRoom(l, r);
+
   MsgServiceBT.init();
   MsgService.init();
   pinMode(LED_PIN,OUTPUT);
