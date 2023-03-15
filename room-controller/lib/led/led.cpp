@@ -1,29 +1,29 @@
-#include "led.h"
+#include "Led.h"
 
-led::led(int pin)
+Led::Led(int pin)
 {
     _pin = pin;
     _state = false;
 }
 
-void led::initialize()
+void Led::initialize()
 {
     pinMode(_pin, OUTPUT);
 }
 
-void led::on()
+void Led::on()
 {
     digitalWrite(_pin, HIGH);
     _state = true;
 }
 
-void led::off()
+void Led::off()
 {
     digitalWrite(_pin, LOW);
     _state = false;
 }
 
-void led::toggle()
+void Led::toggle()
 {
     if (_state)
     {
@@ -35,7 +35,7 @@ void led::toggle()
     }
 }
 
-bool led::isOn()
+bool Led::isOn()
 {
     return _state;
 }

@@ -3,10 +3,10 @@
 
 #include <Arduino.h>
 
-class led
+class Led
 {
 public:
-    led(int pin);
+    Led(int pin);
     void initialize();
     void on();
     void off();
