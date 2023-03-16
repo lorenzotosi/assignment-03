@@ -1,6 +1,4 @@
-#include "MsgService.h"
 #include <Wire.h>
-#include "ArduinoJson.h"
 #include "Scheduler.h"
 #include "a.h"
 #include "SmartRoom.h"
@@ -17,18 +15,19 @@ void setup() {
   l = new Led(LED_PIN);
   r = new rBlinds(8);
   s = new SmartRoom(l, r);
-
-  MsgServiceBT.init();
-  MsgService.init();
+  s->init(1000);
+  l->initialize();
+  //MsgServiceBT.init();
+  //MsgService.init();
   pinMode(LED_PIN,OUTPUT);
   scheduler.init();
-  scheduler.addTask(&a);
+  scheduler.addTask(s);
   
 
   Serial.begin(9600);
   while (!Serial){}
   Serial.println("ready to go.");  
-  a.init(1000); 
+  //a.init(1000); 
 }
 
 void loop() {
