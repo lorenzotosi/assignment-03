@@ -6,13 +6,15 @@
 #include "Led.h"
 #include "rBlinds.h"
 #include <ArduinoJson.h>
+#include "MsgService.h"
 
 
 class SmartRoom : public Task {
     public:
         SmartRoom(Led* l, rBlinds* r);
         void tick();
-        void init();
+        void init(int period);
+        void updateRoom(Msg* msg);
     private:
         Led* led;
         rBlinds* rBlind;
