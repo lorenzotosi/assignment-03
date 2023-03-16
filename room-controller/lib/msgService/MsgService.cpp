@@ -28,7 +28,7 @@ Msg* MsgServiceSerial::receiveMsg(){
 }
 
 void MsgServiceSerial::init(){
-  Serial.begin(9600);
+  //Serial.begin(9600);
   content.reserve(128);
   content = "";
   currentMsg = NULL;
