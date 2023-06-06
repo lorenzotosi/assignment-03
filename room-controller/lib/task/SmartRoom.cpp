@@ -45,5 +45,8 @@ void SmartRoom::updateRoom(Msg *msg)
     {
         digitalWrite(13, doc["light"] == 1 ? HIGH : LOW);
     }
+    if (doc.containsKey("window")){
+        rBlind->setAngle(doc["window"]);
+    }
     Serial.println(command);
 }
