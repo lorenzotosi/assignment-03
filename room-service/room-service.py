@@ -36,13 +36,14 @@ def send_to_arduino(light_message, window_message):
 
 def on_message(client, userdata, msg):
     global light_status, window_status, first_entry, url_post
-    print(msg.topic + " " + str(msg.qos) + " " + str(msg.payload))
-    decoded_message = msg.payload.decode("utf-8")
+    #print(msg.topic + " " + str(msg.qos) + " " + str(msg.payload))
+    decoded_message = json.loads(msg.payload.decode("utf-8"))
     now = datetime.now().strftime("%H:%M:%S")
-    if decoded_message == "occupied":
+    if decoded_message["lights"] == "On":
         if first_entry:
+            print("First entry")
             first_entry = False
-            window_status = 100
+            window_status = 39
             component_type = "window"
             request = {
                 "content": {
@@ -68,7 +69,7 @@ def on_message(client, userdata, msg):
             send_to_arduino(light_status, window_status)
     else:
         if light_status == "On":
-            light_status = "Off"
+            #light_status = "Off"
             component_type = "lights"
             request = {
                 "content": {
@@ -80,6 +81,7 @@ def on_message(client, userdata, msg):
             req.post(url_post, json=request)
             send_to_arduino(light_status, window_status)
         if datetime.now().hour >= 19 and datetime.now().hour <= 8:
+            print("Night time")
             first_entry = True
             if window_status != 0:
                 window_status = 0
@@ -100,29 +102,32 @@ window_status = 0
 first_entry = True
 client = paho.Client()
 client.on_connect = on_connect
-#client.connect("broker.hivemq.com", 1883)
+client.connect("broker.hivemq.com", 1883)
 client.on_subscribe = on_subscribe
 client.on_message = on_message
 url_post = "http://localhost/assignment-03/room-dashboard/room-dashboard-history.php"
 url_get = "http://localhost/assignment-03/room-dashboard/room-dashboard-window.php"
 
 stop = False
-#client.loop_start()
+client.loop_start()
 
 # ser = serial.Serial("/dev/cu.usbmodem14201", 9600, timeout=1)
-ser = serial.Serial("COM3", 9600, timeout=1)
+ser = serial.Serial("COM5", 9600, timeout=1)
 ser.close()
 
 print("Starting loop")
 
 while stop == False:
-    response = req.get(url_get)
+    '''response = req.get(url_get)
     data = response.json()
+    print(data)
     if (data["lights"] != light_status):
+        print("Light status changed")
         light_status = data["lights"]
     if (data["window"] != window_status):
+        print("Window status changed")
         window_status = data["window"]
-    send_to_arduino(light_status, window_status)
+    send_to_arduino(light_status, window_status)'''
 
     print(light_status)
     print(str(window_status))
