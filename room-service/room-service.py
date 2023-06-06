@@ -100,14 +100,14 @@ window_status = 0
 first_entry = True
 client = paho.Client()
 client.on_connect = on_connect
-#client.connect("broker.hivemq.com", 1883)
+client.connect("broker.hivemq.com", 1883)
 client.on_subscribe = on_subscribe
 client.on_message = on_message
 url_post = "http://localhost/assignment-03/room-dashboard/room-dashboard-history.php"
 url_get = "http://localhost/assignment-03/room-dashboard/room-dashboard-window.php"
 
 stop = False
-#client.loop_start()
+client.loop_start()
 
 # ser = serial.Serial("/dev/cu.usbmodem14201", 9600, timeout=1)
 ser = serial.Serial("COM3", 9600, timeout=1)
