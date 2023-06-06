@@ -6,7 +6,7 @@
 #include "MsgService.h"
 #include <ArduinoJson.h>
 
-#define LED_PIN 13
+
 
 class A : public Task
 {
@@ -34,7 +34,7 @@ public:
             }
             Serial.println(command);
             String response = "{\"light\":";
-            response += digitalRead(LED_PIN) == HIGH ? "1" : "0";
+            //response += digitalRead(LED_PIN) == HIGH ? "1" : "0";
             response +=  ",\"window\":";
             response += "50";
             response += "}";

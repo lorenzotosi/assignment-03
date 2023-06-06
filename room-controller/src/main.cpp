@@ -19,7 +19,7 @@ void setup() {
   l->initialize();
   //MsgServiceBT.init();
   //MsgService.init();
-  pinMode(LED_PIN,OUTPUT);
+  //pinMode(LED_PIN,OUTPUT);
   scheduler.init();
   scheduler.addTask(s);
   

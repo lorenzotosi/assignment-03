@@ -43,7 +43,8 @@ def on_message(client, userdata, msg):
         if first_entry:
             print("First entry")
             first_entry = False
-            window_status = 39
+            window_status = 100
+            light_status = "On"
             component_type = "window"
             request = {
                 "content": {
@@ -53,7 +54,6 @@ def on_message(client, userdata, msg):
                 "type": component_type,
             }
             req.post(url_post, json=request)
-            send_to_arduino(light_status, window_status)
 
         if light_status == "Off":
             light_status = "On"
@@ -66,10 +66,10 @@ def on_message(client, userdata, msg):
                 "type": component_type,
             }
             req.post(url_post, json=request)
-            send_to_arduino(light_status, window_status)
+        send_to_arduino(light_status, window_status)
     else:
         if light_status == "On":
-            #light_status = "Off"
+            light_status = "Off"
             component_type = "lights"
             request = {
                 "content": {
@@ -111,23 +111,25 @@ url_get = "http://localhost/assignment-03/room-dashboard/room-dashboard-window.p
 stop = False
 client.loop_start()
 
-# ser = serial.Serial("/dev/cu.usbmodem14201", 9600, timeout=1)
-ser = serial.Serial("COM5", 9600, timeout=1)
+ser = serial.Serial("/dev/cu.usbmodem14201", 9600, timeout=1)
+#ser = serial.Serial("COM5", 9600, timeout=1)
 ser.close()
 
 print("Starting loop")
 
 while stop == False:
-    '''response = req.get(url_get)
+    response = req.get(url_get)
     data = response.json()
     print(data)
     if (data["lights"] != light_status):
         print("Light status changed")
         light_status = data["lights"]
+        send_to_arduino(light_status, window_status)
     if (data["window"] != window_status):
         print("Window status changed")
         window_status = data["window"]
-    send_to_arduino(light_status, window_status)'''
+        send_to_arduino(light_status, window_status)
+    
 
     print(light_status)
     print(str(window_status))
