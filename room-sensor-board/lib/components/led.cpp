@@ -26,3 +26,7 @@ void led::toggle() {
         on();
     }
 }
+
+bool led::getState() {
+    return _state;
+}

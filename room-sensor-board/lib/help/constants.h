@@ -9,11 +9,11 @@
 #include "Scheduler.h"
 #include "clientWifi.h"
 
-#define SCHEDULER 1000
-#define EXECUTE 1000
+#define SCHEDULER 2000
+#define EXECUTE 2000
 
-const char* ssid = "";
-const char* password = "";
+const char* ssid = "AndroidAP";
+const char* password = "paolobello";
 
 
 

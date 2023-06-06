@@ -11,11 +11,7 @@ void pir::initialize() {
 }
 
 bool pir::isMotion() {
-    if (digitalRead(_pin) != _state) {
-        _state = !_state;
-        return true;
-    }
-    return false;
+    return digitalRead(_pin);
 }
 
 bool pir::getState() {

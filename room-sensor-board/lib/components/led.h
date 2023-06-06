@@ -10,6 +10,7 @@ class led {
         void on();
         void off();
         void toggle();
+        bool getState();
     private:
         int _pin;
         bool _state;

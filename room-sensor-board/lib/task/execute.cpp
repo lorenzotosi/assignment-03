@@ -13,20 +13,24 @@ void execute::init(int period) {
 }
 
 void execute::tick() {
-    //if(p->isMotion()){
-        StaticJsonDocument<200> doc;
-        doc["isLedOn"] = "si o no, non lo so :((";
-        doc["lightLevel"] = analogRead(32);
-        doc["isMotion"] = p->getState();
-        serializeJson(doc, Serial);
-        Serial.println();
+    StaticJsonDocument<200> doc;
+    bool isMotion = p->isMotion();
+    if(ph->getLight() < 2000 && isMotion){
+        doc["lights"] = "On";
+    } else {
+        doc["lights"] = "Off";
+    }
+    Serial.println(digitalRead(19));
+    doc["lightLevel"] = analogRead(32);
+    doc["isMotion"] = isMotion;
+    serializeJson(doc, Serial);
+    Serial.println();
 
-        char buffer[256];
-        serializeJson(doc, buffer);
-        client->publish(this->topic, buffer);
-    //}
+    char buffer[256];
+    serializeJson(doc, buffer);
+    client->publish(this->topic, buffer);
 
-    if(p->getState()){
+    if(isMotion){
         l->on();
     } else {
         l->off();
