@@ -1,189 +1,219 @@
 :root {
-    --font-color: #000;
-    --bg-color: #76C9FA;
-    --element-bg-color: #d9f1ff79;
-    --shadow: 0 0 5px #493c3c;
+	--font-color: #000;
+	--bg-color: #76c9fa;
+	--element-bg-color: #d9f1ff79;
+	--shadow: 0 0 5px #493c3c;
 }
 [data-theme="dark"] {
-    --font-color: #c1bfbd;
-    --bg-color: #07080A;
-    --element-bg-color: #3a3a3a79;
+	--font-color: #c1bfbd;
+	--bg-color: #07080a;
+	--element-bg-color: #3a3a3a79;
 }
 
 .preload {
-    width: 100%;
-    height: 100%;
-    background-color: var(--bg-color);
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 999;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    opacity: 1;
-    transition: opacity 1s;
+	width: 100%;
+	height: 100%;
+	background-color: var(--bg-color);
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 999;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	opacity: 1;
+	transition: opacity 1s;
 }
 
 body {
-    color: var(--font-color);
-    background: var(--bg-color);
-    height: fit-content;
+	color: var(--font-color);
+	background: var(--bg-color);
+	height: fit-content;
 }
 
 nav {
-    width: 100%;
-    position: fixed !important;
-    top:0;
-    transition: background-color 1s linear;
-    -webkit-transition: background-color 1s linear;
-    z-index: 1;
+	width: 100%;
+	position: fixed !important;
+	top: 0;
+	transition: background-color 1s linear;
+	-webkit-transition: background-color 1s linear;
+	z-index: 1;
 }
 
 main {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 2rem;
-    margin-top: calc(2rem + 3rem);
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 2rem;
+	margin-top: calc(2rem + 3rem);
 }
 
 .window {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 2rem !important;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	margin-bottom: 2rem !important;
 }
 
 .element,
 .graph {
-    min-width: 480px;
-    width: 50%;
-    background-color: var(--element-bg-color);
-    border-radius: 10px;
-    border: 1px solid #000;
-    padding: 1rem;
-    gap: 1rem;
-    margin: 0 2rem;
-    box-shadow: var(--shadow);
+	min-width: 480px;
+	width: 50%;
+	background-color: var(--element-bg-color);
+	border-radius: 10px;
+	border: 1px solid #000;
+	padding: 1rem;
+	gap: 1rem;
+	margin: 0 2rem;
+	box-shadow: var(--shadow);
 }
-@media only screen and (max-width:550px) {
-    .element,
-    .graph {
-        width: 90%;
-        min-width: auto;
-    }
+@media only screen and (max-width: 550px) {
+	.element,
+	.graph {
+		width: 90%;
+		min-width: auto;
+	}
 }
 
 input[type="range"] {
-    transform: rotate(270deg);
-    -moz-transform: rotate(270deg);
+	transform: rotate(270deg);
+	-moz-transform: rotate(270deg);
 }
 
 input {
-    position: absolute;
-    min-width: 260px;
-    min-height: 280px;
-    opacity: 0;
-    z-index: 2;
-    cursor: pointer;
+	position: absolute;
+	min-width: 260px;
+	min-height: 280px;
+	opacity: 0;
+	z-index: 2;
+	cursor: pointer;
 }
 
 #close {
-    transition: top .5s;
+	transition: top 0.5s;
 }
 
 .lights {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
 }
 
 .light {
-    position: relative;
-    overflow: hidden;
-    width: 70px;
-    height: 80px;
-    max-width: 70px;
-    max-height: 80px;
+	position: relative;
+	overflow: hidden;
+	width: 70px;
+	height: 80px;
+	max-width: 70px;
+	max-height: 80px;
 }
 
 .light img {
-    position: absolute;
-    overflow: hidden;
-    max-width: 70px;
-    max-height: 80px;
-    cursor: pointer;
+	position: absolute;
+	overflow: hidden;
+	max-width: 70px;
+	max-height: 80px;
+	cursor: pointer;
 }
 
 .window-image {
-    position: relative;
-    overflow: hidden;
-    width: 260px;
-    height: 280px;
-    max-width: 260px;
-    max-height: 280px;
+	position: relative;
+	overflow: hidden;
+	width: 260px;
+	height: 280px;
+	max-width: 260px;
+	max-height: 280px;
 }
 
 .window-image img {
-    position: absolute;
-    overflow: hidden;
-    max-width: 260px;
-    max-height: 280px;
-    pointer-events: none;
+	position: absolute;
+	overflow: hidden;
+	max-width: 260px;
+	max-height: 280px;
+	pointer-events: none;
 }
 
-#day, #night {
-    transition: opacity 1s;
-    -webkit-transition: opacity 1s;
+#day,
+#night {
+	transition: opacity 1s;
+	-webkit-transition: opacity 1s;
 }
 
-#light-on, #light-off {
-    transition: opacity 0.5s;
-    -webkit-transition: opacity 0.5s;
+#light-on,
+#light-off {
+	transition: opacity 0.5s;
+	-webkit-transition: opacity 0.5s;
 }
 
 #light-on {
-    opacity: 0;
+	opacity: 0;
 }
 
 .window-info,
 .lights-info,
 #clock {
-    font-weight: bold;
-    font-size: 1.25rem;
-    text-shadow: var(--shadow);
-    text-align: center;
-    margin: 0;
+	font-weight: bold;
+	font-size: 1.25rem;
+	text-shadow: var(--shadow);
+	text-align: center;
+	margin: 0;
 }
 
 #clock {
-    font-size: 1.75rem;
+	font-size: 1.75rem;
 }
 
 #lights-status {
-    color: red;
+	color: red;
 }
 
 .graph {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
 }
 
 .graph:nth-child(2) {
-    max-height: 220px;
-    justify-content: start;
+	max-height: 220px;
+	justify-content: start;
 }
 
 .graph-title {
-    font-size: 1.5rem;
-    font-weight: bold;
-    text-shadow: var(--shadow);
-    text-align: center;
-    margin: 0;
+	font-size: 1.5rem;
+	font-weight: bold;
+	text-shadow: var(--shadow);
+	text-align: center;
+	margin: 0;
+}
+
+#window-log,
+#lights-log {
+	max-height: 240px;
+	overflow-y: auto;
+	width: 20%;
+	min-width: 140px;
+	padding: 0 1rem;
+	/* padding: 0 40%; */
+}
+
+::-webkit-scrollbar {
+	width: 10px;
+}
+
+::-webkit-scrollbar-track {
+	background: #f1f1f1;
+	border-radius: 5ex;
+}
+
+::-webkit-scrollbar-thumb {
+	background: #888;
+	border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+	background: #555;
 }
